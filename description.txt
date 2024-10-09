@@ -1,0 +1,76 @@
+=====================================
+                Dados
+=====================================
+Usuário:
+    - Nome
+    - Username
+
+    Parceiros de trabalho:
+        - Usuário
+
+    Pedidos de parceria (Fila):
+        - Usuário
+        - Situação
+    
+    Mensagens recebidas (Pilha):
+        - Texto
+
+=====================================
+              Funções    
+=====================================
+- 1. Cadastrar usuário
+- 2. Listar parceiros
+- 3. Soliciar parceria
+- 4. Avaliar solicitações
+- 5. Mandar mensagens
+- 6. Ver mensagens
+- 7. Sugerir parcerias (Mostrar parceiros de atuais parceiros do usuário)
+- 8. Reiniciar a rede (Apagar todas as informações salvas)
+
+=====================================
+              Exemplos    
+=====================================
+1:
+    Digite seu nome: Fulano Detal
+    Digite seu apelido: xX_PssyDestroiyer_Xx
+    
+    Usuário cadastrado com sucesso!
+
+1:
+    Digite seu nome: Enzo Silva Sousa 
+    Digite seu apelido: Enzo@todas 
+
+    Usuário cadastrado com sucesso!
+
+3:
+    Entre com o seu apelido: xX_PssyDestroiyer_Xx
+    Digite o apelido de quem quer ser parcerio: Enzo@todas
+
+    Pedido encaminhado com sucesso
+
+4:
+    Digite o seu apelido: Enzo@todas
+    xX_PssyDestroiyer_Xx quer ser seu parcerio(a). Aceita (S/N)? S
+    josefinhosousa quer ser seu parceiro(a). Aceita (S/N)? S
+
+    Operacao realizada com sucesso
+
+5:
+    Digite seu apelido: Enzo@todas
+    Digite o apelido de quem quer mandar mensagem: xX_PssyDestroiyer_Xx
+    Entre com a mensagem: fri fairi oge?
+
+    Mensagem enviada com sucesso
+
+6:
+    Digite seu apelido: xX_PssyDestroiyer_Xx
+    Suas mensagens sao:
+    (Enzo@todas) fri fairi oge?
+    (josefinhosousa) Xadrez?
+
+    Mensagens exibidas
+
+7:
+    Sugestao de novas parcerias: xX_PssyDestroiyer_Xx, josefinhosousa
+
+    Operacao realizada com sucesso
