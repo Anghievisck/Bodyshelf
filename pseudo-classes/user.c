@@ -1,5 +1,4 @@
 #include "user.h"
-
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -20,7 +19,74 @@ void ShowColleges(User *user){
     ShowUsers(user->colleges);
 }
 void suggestions(User *user){
-    
+    Node *temp = user->colleges->start;
+    for(int i=0; i<user->colleges->total; i++){
+        ShowColleges(temp);
+        temp=temp->next;
+    }
+}
+void Collegesrequest(List *allusers){
+    printf("Entre com o seu apelido:");
+    char username[12];
+    scanf("%s", &username);
+    printf("\n");
+    User *user = FindUserByUsernamne(allusers, username);
+    if(user == NULL){
+        printf("Usuario nao encontrado");
+        return;
+    }
+    char target[12];
+    printf("Digite o apelido de quem quer ser parcerio:");
+    scanf("%s", &target);
+    printf("\n");
+    User *alvo = FindUserByUsernamne(allusers, target);
+    if(alvo == NULL){
+        printf("Usuario nao encontrado");
+        return;
+    }
+    addrequest(alvo, user);
+    printf("Pedido encaminhado com sucesso");
+}
+void addrequest(User *aceitas, User *aguardo){
+    if(aceitas != NULL && aguardo != NULL){
+        push(aceitas->request, aguardo);
+    }
+}
+void Showrequests(List  *allusers){
+    printf("Entre com o seu apelido:");
+    char username[12];
+    scanf("%s", &username);
+    printf("\n");
+    User *user = FindUserByUsernamne(allusers, username);
+    if(user == NULL){
+        printf("Usuario nao encontrado");
+        return;
+    }
+    User *temp = user->request->start;
+    if(temp == NULL){
+        printf("Sem solicitacoes");
+    }else{
+        while(temp != NULL){
+            int loop=1;
+            char choice;
+            while(loop==1){
+                printf("%s quer ser seu parcerio(a).Aceita (S/N)?", temp->name);
+                scanf("%c", &choice);
+                if(choice!="S" || choice!="N"){
+                    printf("\nComando invalido\n");
+                }else{
+                    loop=0;
+                }
+            }
+
+            if(choice == "S"){
+                Push(user->colleges, temp);
+            }
+            user->request->start->next;
+            int erro;
+            Pop(user->request, &erro);
+        }
+    }
 }
 void ShowUsers(List *l){
     Node *temp = l->start;
