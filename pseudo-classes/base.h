@@ -1,8 +1,8 @@
 typedef struct user;
 
 typedef struct node{
-    user *info;
-    node *next, *previous;
+    User *info;
+    Node *next, *previous;
 }Node;
 
 typedef struct list{
@@ -11,8 +11,8 @@ typedef struct list{
 }List;
 
 void Create(List*);
-void Push(List*, user*, int*);
-user Pop(List*, int*);
-user Out(List*, int*);
-user Top(List*, int*);
-user Bottom(List*, int*);
+void Push(List*, User*);
+User* Pop(List*, int*);
+User* Out(List*, int*);
+User* Top(List*, int*);
+User* Bottom(List*, int*);

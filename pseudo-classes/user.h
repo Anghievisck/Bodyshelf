@@ -12,4 +12,4 @@ void RegisterUser(List*);
 void ShowUsers(List*);
 void ShowColleges(User*);
 
-User FindUserByUsernamne(List*, char[USERNAME]);
+User* FindUserByUsernamne(List*, char[USERNAME]);

@@ -13,9 +13,9 @@ void Push(List *l, User *u){
 
     Node *temp = (Node*)malloc(sizeof(Node));
 
-    temp->info = *u;
+    temp->info = u;
     temp->previous = NULL;
-    if(l->start! = NULL){
+    if(l->start != NULL){
         temp->next = l->start;
         l->start->previous = temp;
         l->start = temp;
@@ -26,12 +26,12 @@ void Push(List *l, User *u){
     }
 }
 
-User Pop(List *l, int *e){
+User* Pop(List *l, int *e){
     if(l->total != 0){
         *e = 0;
         l->total--;
 
-        User u = l->start->info;
+        User *u = l->start->info;
         Node *temp = l->start;
         l->start = l->start->next;
 
@@ -43,12 +43,12 @@ User Pop(List *l, int *e){
     }
 }
 
-User Out(List *l, int *e){
+User* Out(List *l, int *e){
     if(l->total != 0){
         *e = 0;
         l->total--;
 
-        User u = l->end->info;
+        User *u = l->end->info;
         Node *temp = l->end;
         l->end = l->end->previous;
         free(temp);
@@ -59,7 +59,7 @@ User Out(List *l, int *e){
     } 
 }
 
-User Top(List *l, int *e){
+User* Top(List *l, int *e){
     if(l->total != 0){
         *e = 0;
 
@@ -69,7 +69,7 @@ User Top(List *l, int *e){
     }
 }
 
-User Bottom(List *l, int *e){
+User* Bottom(List *l, int *e){
     if(l->total != 0){
         *e = 0;
 

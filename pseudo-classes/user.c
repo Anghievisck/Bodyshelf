@@ -12,14 +12,16 @@ void RegisterUser(List *allUsers){
     scanf("%s", user->username);
 
     Create(user->colleges);
-
+    
     Push(allUsers, user);
 }
 
 void ShowColleges(User *user){
     ShowUsers(user->colleges);
 }
-
+void suggestions(User *user){
+    
+}
 void ShowUsers(List *l){
     Node *temp = l->start;
 
@@ -29,7 +31,7 @@ void ShowUsers(List *l){
     }
 };
 
-User FindUserByUsernamne(List *l, char target[USERNAME]){
+User* FindUserByUsernamne(List *l, char target[USERNAME]){
     Node *temp = l->start;
     
     while(temp != NULL){
@@ -44,5 +46,5 @@ User FindUserByUsernamne(List *l, char target[USERNAME]){
         }
     }
 
-    return temp
+    return temp;
 }
