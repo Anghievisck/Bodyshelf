@@ -5,7 +5,7 @@
 
 typedef struct user{
     char name[NAME], username[USERNAME];
-    List *colleges, *request;
+    List *colleges, *request, *msg;
 }User;
 
 void RegisterUser(List*);
@@ -15,5 +15,7 @@ void suggestions(User *);
 void Collegesrequest(List *);
 void addrequest(User *, User *);
 void Showrequests(List  *);
+void sendmsg(List *);
+void showmsg(List *);
 
 User* FindUserByUsernamne(List*, char[USERNAME]);
