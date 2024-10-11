@@ -16,3 +16,4 @@ User* Pop(List*, int*);
 User* Out(List*, int*);
 User* Top(List*, int*);
 User* Bottom(List*, int*);
+void sortAdd(List *, User *);

@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 #include "user.h"
 
 
@@ -22,6 +23,29 @@ void Push(List *l, User *u){
     } else {
         temp->next = NULL;
         l->start = temp;
+        l->end = temp;
+    }
+}
+void sortAdd(List *l, User *u){
+    if(l->total == 0){
+        Push(l, u);
+    }else{
+        l -> total++;
+        Node *temp = (Node*)malloc(sizeof(Node));
+        temp->info = u;
+        Node *aux = l->start;
+        while(aux != NULL){
+            if(strcmp(u->username, aux->info->username) < 0){
+                temp->next = aux;
+                temp->previous = aux->previous;
+                aux->previous->next = temp;
+                aux->previous = temp;
+                return;
+            }
+        }
+        temp->next = NULL;
+        temp->previous = l->end;
+        l->end->next = temp;
         l->end = temp;
     }
 }

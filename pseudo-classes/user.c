@@ -1,7 +1,6 @@
 #include "user.h"
 #include <stdlib.h>
 #include <stdio.h>
-
 void RegisterUser(List *allUsers){
     User *user = (User*)malloc(sizeof(User));
 
@@ -11,9 +10,8 @@ void RegisterUser(List *allUsers){
     scanf("%s", user->username);
     Create(user->colleges);
     Create(user->request);
-    Push(allUsers, user);
+    sortAdd(allUsers, user);
 }
-
 void ShowColleges(User *user){
     ShowUsers(user->colleges);
 }
