@@ -9,9 +9,8 @@ void RegisterUser(List *allUsers){
     scanf("%s", user->name);
     printf("\nDigite seu username:");
     scanf("%s", user->username);
-
     Create(user->colleges);
-    
+    Create(user->request);
     Push(allUsers, user);
 }
 
@@ -78,7 +77,6 @@ void Showrequests(List  *allusers){
                     loop=0;
                 }
             }
-
             if(choice == "S"){
                 Push(user->colleges, temp);
             }
@@ -96,6 +94,7 @@ void ShowUsers(List *l){
         temp = temp->next;
     }
 };
+
 
 User* FindUserByUsernamne(List *l, char target[USERNAME]){
     Node *temp = l->start;
