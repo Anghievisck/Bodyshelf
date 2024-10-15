@@ -14,7 +14,7 @@ void Push(List *l, User *u){
 
     Node *temp = (Node*)malloc(sizeof(Node));
 
-    temp->info = u;
+    temp->info->info = u;
     temp->previous = NULL;
     if(l->start != NULL){
         temp->next = l->start;
@@ -32,10 +32,10 @@ void sortAdd(List *l, User *u){
     }else{
         l -> total++;
         Node *temp = (Node*)malloc(sizeof(Node));
-        temp->info = u;
+        temp->info->info = u;
         Node *aux = l->start;
         while(aux != NULL){
-            if(strcmp(u->username, aux->info->username) < 0){
+            if(strcmp(u->username, aux->info->info->username) < 0){
                 temp->next = aux;
                 temp->previous = aux->previous;
                 aux->previous->next = temp;
@@ -50,12 +50,12 @@ void sortAdd(List *l, User *u){
     }
 }
 
-User* Pop(List *l, int *e){
+Dado* Pop(List *l, int *e){
     if(l->total != 0){
         *e = 0;
         l->total--;
 
-        User *u = l->start->info;
+        User *u = l->start->info->info;
         Node *temp = l->start;
         l->start = l->start->next;
 
@@ -67,7 +67,7 @@ User* Pop(List *l, int *e){
     }
 }
 
-User* Out(List *l, int *e){
+Dado* Out(List *l, int *e){
     if(l->total != 0){
         *e = 0;
         l->total--;
@@ -83,21 +83,21 @@ User* Out(List *l, int *e){
     } 
 }
 
-User* Top(List *l, int *e){
+Dado Top(List *l, int *e){
     if(l->total != 0){
         *e = 0;
 
-        return l->end->info;
+        return l->end->info->info;
     } else {
         *e = 1;
     }
 }
 
-User* Bottom(List *l, int *e){
+Dado Bottom(List *l, int *e){
     if(l->total != 0){
         *e = 0;
 
-        return l->start->info;
+        return l->start->info->info;
     }else{
         *e=1;
     }

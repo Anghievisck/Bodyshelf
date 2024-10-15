@@ -1,7 +1,11 @@
-typedef struct user;
-
-typedef struct node{
+typedef struct User;
+typedef struct Msg;
+typedef union{
     User *info;
+    Msg  *msg;
+}Dado;
+typedef struct node{
+    Dado *info;
     Node *next, *previous;
 }Node;
 
@@ -12,8 +16,8 @@ typedef struct list{
 
 void Create(List*);
 void Push(List*, User*);
-User* Pop(List*, int*);
-User* Out(List*, int*);
-User* Top(List*, int*);
-User* Bottom(List*, int*);
+Dado* Pop(List*, int*);
+Dado* Out(List*, int*);
+Dado Top(List*, int*);
+Dado Bottom(List*, int*);
 void sortAdd(List *, User *);
