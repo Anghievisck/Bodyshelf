@@ -105,7 +105,7 @@ void sendmsg(List *allusers){
         printf("Usuario nao encontrado");
         return;
     }
-    Msg *txt;
+    Msg *txt = (Msg*)malloc(sizeof(Msg));
     printf("Entre com a mensagem:");
     scanf("%s", &txt->name);
     strcpy(txt->username, username);
@@ -129,7 +129,7 @@ void showmsg(List *allusers){
     while(user->msg->start!=NULL){
         print("(%s)%s", user->msg->start->info->msg->username, user->msg->start->info->msg->name);
         int erro;
-        Pop(user->msg->start, &erro);
+        Pop(user->msg, &erro);
     }
     printf("Mensagens exibidas");
 }
