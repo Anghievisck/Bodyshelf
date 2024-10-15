@@ -97,7 +97,7 @@ void sendmsg(List *allusers){
         return;
     }
     char target[12];
-    printf("Digite o apelido de quem quer ser parcerio:");
+    printf("Digite o apelido de seu amigo:");
     scanf("%s", &target);
     printf("\n");
     User *alvo = FindUserByUsernamne(allusers, target);

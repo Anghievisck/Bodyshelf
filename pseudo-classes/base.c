@@ -42,6 +42,7 @@ void sortAdd(List *l, User *u){
                 aux->previous = temp;
                 return;
             }
+            aux=aux->next;
         }
         temp->next = NULL;
         temp->previous = l->end;
