@@ -15,9 +15,9 @@ typedef struct list{
 }List;
 
 void Create(List*);
-void Push(List*, User*);
+void Push(List*, Dado*);
 Dado* Pop(List*, int*);
 Dado* Out(List*, int*);
 Dado Top(List*, int*);
 Dado Bottom(List*, int*);
-void sortAdd(List *, User *);
+void sortAdd(List *, Dado *);

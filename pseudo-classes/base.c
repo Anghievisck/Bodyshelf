@@ -9,7 +9,7 @@ void Create(List *l){
     l->total = 0;
 }
 
-void Push(List *l, User *u){
+void Push(List *l, Dado *u){
     l->total++;
 
     Node *temp = (Node*)malloc(sizeof(Node));
@@ -26,7 +26,7 @@ void Push(List *l, User *u){
         l->end = temp;
     }
 }
-void sortAdd(List *l, User *u){
+void sortAdd(List *l, Dado *u){
     if(l->total == 0){
         Push(l, u);
     }else{
@@ -35,7 +35,7 @@ void sortAdd(List *l, User *u){
         temp->info->info = u;
         Node *aux = l->start;
         while(aux != NULL){
-            if(strcmp(u->username, aux->info->info->username) < 0){
+            if(strcmp(u->info->username, aux->info->info->username) < 0){
                 temp->next = aux;
                 temp->previous = aux->previous;
                 aux->previous->next = temp;
