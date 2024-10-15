@@ -105,7 +105,7 @@ void sendmsg(List *allusers){
         printf("Usuario nao encontrado");
         return;
     }
-    User *txt;
+    Msg *txt = (Msg*)malloc(sizeof(Msg));
     printf("Entre com a mensagem:");
     scanf("%s", &txt->name);
     strcpy(txt->username, username);
@@ -127,9 +127,9 @@ void showmsg(List *allusers){
     }
     printf("Suas mensagens sao:");
     while(user->msg->start!=NULL){
-        print("(%s)%s", user->msg->start->info->username, user->msg->start->info->name);
+        print("(%s)%s", user->msg->start->info->msg->username, user->msg->start->info->msg->name);
         int erro;
-        Pop(user->msg->start, &erro);
+        Pop(user->msg, &erro);
     }
     printf("Mensagens exibidas");
 }
@@ -137,7 +137,7 @@ void ShowUsers(List *l){
     Node *temp = l->start;
 
     while(temp != NULL){
-        printf("%f", temp->info->username);
+        printf("%f", temp->info->info->username);
         temp = temp->next;
     }
 };
@@ -148,7 +148,7 @@ User* FindUserByUsernamne(List *l, char target[USERNAME]){
     
     while(temp != NULL){
         for(int i = 0; i < USERNAME; i++){
-            if(target[i] != temp->info->name[i]){
+            if(target[i] != temp->info->info->name[i]){
                 break;
             } else {
                 if(i == USERNAME - 1){

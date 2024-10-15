@@ -7,6 +7,9 @@ typedef struct user{
     char name[NAME], username[USERNAME];
     List *colleges, *request, *msg;
 }User;
+typedef struct {
+    char name[250], username[12];
+}Msg;
 
 void RegisterUser(List*);
 void ShowUsers(List*);
