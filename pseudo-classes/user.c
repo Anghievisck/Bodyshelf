@@ -8,6 +8,13 @@ typedef struct user User;
 
 void RegisterUser(List *allUsers){
     User *usera = (User*)malloc(sizeof(User));
+    if (usera == NULL) {
+        fprintf(stderr, "Error allocating memory for user\n");
+        return;
+    }
+    usera->colleges = malloc(sizeof(List));
+    usera->msg = malloc(sizeof(List));
+    usera->request = malloc(sizeof(List));
     printf("\nDigite seu name: ");
     scanf("%s", usera->name);
     printf("\nDigite seu username:");
@@ -15,9 +22,10 @@ void RegisterUser(List *allUsers){
     Create(usera->colleges);
     Create(usera->request);
     Create(usera->msg);
-    Dado casulo;
-    casulo.info=usera;
-    Push(allUsers, &casulo);
+    
+    Dado *casulo =(Dado*)malloc(sizeof(Dado));
+    casulo->info=usera;
+    Push(allUsers, casulo);
 }
 void ShowColleges(User *user){
     ShowUsers(user->colleges);
@@ -49,13 +57,13 @@ void Collegesrequest(List *allusers){
         return;
     }
     addrequest(alvo, user);
-    printf("Pedido encaminhado com sucesso");
+    printf("Pedido encaminhado com sucesso\n");
 }
 void addrequest(User *aceitas, User *aguardo){
     if(aceitas != NULL && aguardo != NULL){
-        Dado casulo;
-        casulo.info=aguardo;
-        Push(aceitas->request, &casulo);
+        Dado *casulo =(Dado*)malloc(sizeof(Dado));
+        casulo->info=aguardo;
+        Push(aceitas->request, casulo);
     }
 }
 void Showrequests(List  *allusers){
@@ -77,20 +85,21 @@ void Showrequests(List  *allusers){
             int loop=1;
             char choice;
             while(loop==1){
-                printf("%s quer ser seu parcerio(a).Aceita (S/N)?", temp->name);
+                printf("%s quer ser seu parcerio(a).Aceita (S/N)?", temp->username);
                 scanf("%c", &choice);
-                if(choice!='S' || choice!='N'){
+                if(choice!='S' && choice!='N'){
                     printf("\nComando invalido\n");
                 }else{
                     loop=0;
                 }
             }
             if(choice == 'S'){
-                Dado casulo;
-                casulo.info=temp;
-                Push(user->colleges, &casulo);
-                casulo.info=user;
-                Push(temp->colleges, &casulo);
+                Dado *casulo =(Dado*)malloc(sizeof(Dado));
+                casulo->info=temp;
+                Push(user->colleges, casulo);
+                Dado *casulo2 =(Dado*)malloc(sizeof(Dado));
+                casulo2->info=user;
+                Push(temp->colleges, casulo2);
             }
             int erro;
             Out(user->request, &erro);
@@ -120,9 +129,9 @@ void sendmsg(List *allusers){
     printf("Entre com a mensagem:");
     scanf("%s", &txt->name);
     strcpy(txt->username, username);
-    Dado casulo;
-    casulo.msg=txt;
-    Push(alvo->msg, &casulo);
+    Dado *casulo =(Dado*)malloc(sizeof(Dado));
+    casulo->msg=txt;
+    Push(alvo->msg, casulo);
 }
 void showmsg(List *allusers){
     printf("Entre com o seu apelido:");
@@ -155,22 +164,14 @@ void ShowUsers(List *l){
         temp = temp->next;
     }
 };
-
-
 User* FindUserByUsernamne(List *l, char target[USERNAME]){
     Node *temp = l->start;
     while(temp != NULL){
-        for(int i = 0; i < USERNAME; i++){
-            if(target[i] != temp->info->info->name[i]){
-                break;
-            } else {
-                if(i == USERNAME - 1){
-                    return (temp->info->info);
-                }
-            }
+        if(strcmp(target, temp->info->info->username)==0){
+            return(temp->info->info);
         }
         temp = temp->next;
     }
 
-    return (temp->info->info);
+    return (NULL);
 }

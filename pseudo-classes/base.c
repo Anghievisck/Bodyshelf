@@ -1,8 +1,7 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include "base.h"
-
-
 
 void Create(List *l){
     l->end = NULL;
@@ -12,9 +11,7 @@ void Create(List *l){
 
 void Push(List *l, Dado *u){
     l->total++;
-
     Node *temp = (Node*)malloc(sizeof(Node));
-
     temp->info = u;
     temp->previous = NULL;
     if(l->start != NULL){
@@ -23,6 +20,7 @@ void Push(List *l, Dado *u){
         l->start = temp;
     } else {
         temp->next = NULL;
+        temp->previous = NULL;
         l->start = temp;
         l->end = temp;
     }

@@ -3,6 +3,9 @@
 
 #include "user.h"
 
+typedef struct user User;
+typedef struct msg Msg;
+typedef struct node Node;
 
 typedef union{
     User *info;
