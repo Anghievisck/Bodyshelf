@@ -1,18 +1,23 @@
+
+#include "base.h"
 #include "user.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-void RegisterUser(List *allUsers){
-    User *user = (User*)malloc(sizeof(User));
+typedef struct user User;
 
+void RegisterUser(List *allUsers){
+    User *usera = (User*)malloc(sizeof(User));
     printf("\nDigite seu name: ");
-    scanf("%s", user->name);
+    scanf("%s", usera->name);
     printf("\nDigite seu username:");
-    scanf("%s", user->username);
-    Create(user->colleges);
-    Create(user->request);
-    Create(user->msg);
-    sortAdd(allUsers, user);
+    scanf("%s", usera->username);
+    Create(usera->colleges);
+    Create(usera->request);
+    Create(usera->msg);
+    Dado casulo;
+    casulo.info=usera;
+    Push(allUsers, &casulo);
 }
 void ShowColleges(User *user){
     ShowUsers(user->colleges);
@@ -20,7 +25,7 @@ void ShowColleges(User *user){
 void suggestions(User *user){
     Node *temp = user->colleges->start;
     for(int i=0; i<user->colleges->total; i++){
-        ShowColleges(temp);
+        ShowColleges(temp->info->info);
         temp=temp->next;
     }
 }
@@ -48,7 +53,9 @@ void Collegesrequest(List *allusers){
 }
 void addrequest(User *aceitas, User *aguardo){
     if(aceitas != NULL && aguardo != NULL){
-        push(aceitas->request, aguardo);
+        Dado casulo;
+        casulo.info=aguardo;
+        Push(aceitas->request, &casulo);
     }
 }
 void Showrequests(List  *allusers){
@@ -61,25 +68,29 @@ void Showrequests(List  *allusers){
         printf("Usuario nao encontrado");
         return;
     }
-    User *temp = user->request->end;
+    User *temp = user->request->end->info->info;
     if(temp == NULL){
         printf("Sem solicitacoes");
     }else{
         while(temp != NULL){
-            temp = user->request->end;
+            temp = user->request->end->info->info;
             int loop=1;
             char choice;
             while(loop==1){
                 printf("%s quer ser seu parcerio(a).Aceita (S/N)?", temp->name);
                 scanf("%c", &choice);
-                if(choice!="S" || choice!="N"){
+                if(choice!='S' || choice!='N'){
                     printf("\nComando invalido\n");
                 }else{
                     loop=0;
                 }
             }
-            if(choice == "S"){
-                Push(user->colleges, temp);
+            if(choice == 'S'){
+                Dado casulo;
+                casulo.info=temp;
+                Push(user->colleges, &casulo);
+                casulo.info=user;
+                Push(temp->colleges, &casulo);
             }
             int erro;
             Out(user->request, &erro);
@@ -109,7 +120,9 @@ void sendmsg(List *allusers){
     printf("Entre com a mensagem:");
     scanf("%s", &txt->name);
     strcpy(txt->username, username);
-    Push(alvo->msg, txt);
+    Dado casulo;
+    casulo.msg=txt;
+    Push(alvo->msg, &casulo);
 }
 void showmsg(List *allusers){
     printf("Entre com o seu apelido:");
@@ -127,7 +140,8 @@ void showmsg(List *allusers){
     }
     printf("Suas mensagens sao:");
     while(user->msg->start!=NULL){
-        print("(%s)%s", user->msg->start->info->msg->username, user->msg->start->info->msg->name);
+
+        printf("(%s)%s", user->msg->start->info->msg->username, user->msg->start->info->msg->name);
         int erro;
         Pop(user->msg, &erro);
     }
@@ -145,19 +159,18 @@ void ShowUsers(List *l){
 
 User* FindUserByUsernamne(List *l, char target[USERNAME]){
     Node *temp = l->start;
-    
     while(temp != NULL){
         for(int i = 0; i < USERNAME; i++){
             if(target[i] != temp->info->info->name[i]){
                 break;
             } else {
                 if(i == USERNAME - 1){
-                    return temp;
+                    return (temp->info->info);
                 }
             }
         }
         temp = temp->next;
     }
 
-    return temp;
+    return (temp->info->info);
 }

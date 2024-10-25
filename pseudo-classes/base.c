@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
-#include "user.h"
+#include "base.h"
+
 
 
 void Create(List *l){
@@ -14,7 +15,7 @@ void Push(List *l, Dado *u){
 
     Node *temp = (Node*)malloc(sizeof(Node));
 
-    temp->info->info = u;
+    temp->info = u;
     temp->previous = NULL;
     if(l->start != NULL){
         temp->next = l->start;
@@ -26,37 +27,13 @@ void Push(List *l, Dado *u){
         l->end = temp;
     }
 }
-void sortAdd(List *l, Dado *u){
-    if(l->total == 0){
-        Push(l, u);
-    }else{
-        l -> total++;
-        Node *temp = (Node*)malloc(sizeof(Node));
-        temp->info->info = u;
-        Node *aux = l->start;
-        while(aux != NULL){
-            if(strcmp(u->info->username, aux->info->info->username) < 0){
-                temp->next = aux;
-                temp->previous = aux->previous;
-                aux->previous->next = temp;
-                aux->previous = temp;
-                return;
-            }
-            aux=aux->next;
-        }
-        temp->next = NULL;
-        temp->previous = l->end;
-        l->end->next = temp;
-        l->end = temp;
-    }
-}
+
 
 Dado* Pop(List *l, int *e){
     if(l->total != 0){
         *e = 0;
         l->total--;
-
-        User *u = l->start->info->info;
+        Dado *u = l->start->info;
         Node *temp = l->start;
         l->start = l->start->next;
 
@@ -73,7 +50,7 @@ Dado* Out(List *l, int *e){
         *e = 0;
         l->total--;
 
-        User *u = l->end->info;
+        Dado *u = l->end->info;
         Node *temp = l->end;
         l->end = l->end->previous;
         free(temp);
@@ -84,21 +61,19 @@ Dado* Out(List *l, int *e){
     } 
 }
 
-Dado Top(List *l, int *e){
+Dado* Top(List *l, int *e){
     if(l->total != 0){
         *e = 0;
-
-        return l->end->info->info;
+        return l->end->info;
     } else {
         *e = 1;
     }
 }
 
-Dado Bottom(List *l, int *e){
+Dado* Bottom(List *l, int *e){
     if(l->total != 0){
         *e = 0;
-
-        return l->start->info->info;
+        return l->start->info;
     }else{
         *e=1;
     }

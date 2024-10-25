@@ -1,24 +1,30 @@
+#ifndef BASE_H 
+#define BASE_H
+
 #include "base.h"
 
 #define NAME 50
 #define USERNAME 12
-
+typedef struct list List;
+typedef struct node Node;
+typedef struct user User;
+typedef struct msg Msg;
 typedef struct user{
     char name[NAME], username[USERNAME];
     List *colleges, *request, *msg;
 }User;
-typedef struct {
+typedef struct msg{
     char name[250], username[12];
 }Msg;
 
-void RegisterUser(List*);
-void ShowUsers(List*);
-void ShowColleges(User*);
-void suggestions(User *);
-void Collegesrequest(List *);
-void addrequest(User *, User *);
-void Showrequests(List  *);
-void sendmsg(List *);
-void showmsg(List *);
-
-User* FindUserByUsernamne(List*, char[USERNAME]);
+void RegisterUser(List *a);
+void ShowUsers(List *a);
+void ShowColleges(User *a);
+void suggestions(User *a);
+void Collegesrequest(List *a);
+void addrequest(User *a, User *b);
+void Showrequests(List *a  );
+void sendmsg(List *a );
+void showmsg(List *a );
+User* FindUserByUsernamne(List *a, char[USERNAME]);
+#endif

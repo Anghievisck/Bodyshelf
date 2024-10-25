@@ -1,5 +1,9 @@
-typedef struct User;
-typedef struct Msg;
+#ifndef USER_H
+#define USER_H
+
+#include "user.h"
+
+
 typedef union{
     User *info;
     Msg  *msg;
@@ -16,8 +20,9 @@ typedef struct list{
 
 void Create(List*);
 void Push(List*, Dado*);
-Dado* Pop(List*, int*);
-Dado* Out(List*, int*);
-Dado Top(List*, int*);
-Dado Bottom(List*, int*);
-void sortAdd(List *, Dado *);
+Dado* Pop(List*, int *);
+Dado* Out(List*, int *);
+Dado* Top(List*, int *);
+Dado* Bottom(List*, int *);
+#endif 
+
