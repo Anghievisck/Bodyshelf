@@ -16,7 +16,7 @@ typedef struct user{
 typedef struct msg{
     char name[250], username[12];
 }Msg;
-
+void dellrede(List *a);
 void RegisterUser(List *a);
 void ShowUsers(List *a);
 void Showmycolleges(List *a);

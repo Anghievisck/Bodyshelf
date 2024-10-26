@@ -33,6 +33,9 @@ Dado* Pop(List *l, int *e){
         Node *temp = l->start;
         Dado *aux = l->start->info;
         l->start = l->start->next;
+        if(l->start==NULL){
+            l->end=NULL;
+        }
         free(temp);
         free(aux);
         return(u);
@@ -48,6 +51,9 @@ Dado* Out(List *l, int *e){
         Node *temp = l->end;
         Dado *aux=l->end->info;
         l->end = l->end->previous;
+        if(l->end==NULL){
+            l->start==NULL;
+        }
         free(temp);
         free(u);
         return(aux);

@@ -5,7 +5,40 @@
 #include <stdio.h>
 #include <string.h>
 typedef struct user User;
-
+void dellrede(List *allusers){
+    //para cada usuario
+    for(int i=0; i<allusers->total; i++){
+        //pegando o primeiro usuario
+        User *temp=allusers->start->info->info;
+        //apagando lista msm
+        for(int j=0; j<temp->msg->total; j++){
+            //apagando a info dentro do casulo
+            free(temp->msg->start->info->msg);
+            //apagando tanto o casulo quanto o bloco que esta o casulo com o Pop
+            Pop(temp->msg, NULL);
+        }
+        //apagando a lista em si
+        free(temp->msg);
+        for(int j=0; j<temp->colleges->total; j++){
+            //apagando apenas o casulo quanto o bloco
+            //note que diferente de msg a info dentro do casulo é um user que esta allusers logo deve ser apagado no decorrer do codigo
+            Pop(temp->colleges, NULL);
+        }
+        //apagando a lista em si
+        free(temp->colleges);
+        for(int j=0; j<temp->request->total; j++){
+            //mesma logica da lista colleges
+            Pop(temp->request, NULL);
+        }
+        free(temp->request);
+        //apagando o bloco e o casulo em que o usuario esta
+        Pop(allusers, NULL);
+        //apagando o usuario finalmente
+        free(temp);
+    }
+    //em tese allusers deve ficar que nem quando criado
+    allusers->total=0;
+}
 void RegisterUser(List *allUsers){
     //Aloco o "usuario"
     User *usera = (User*)malloc(sizeof(User));
@@ -208,6 +241,7 @@ void showmsg(List *allusers){
         printf("(%s)%s\n", user->msg->start->info->msg->username, user->msg->start->info->msg->name);
         int erro;
         //retiro a primeira msg.
+        free(user->msg->start->info->msg);
         Pop(user->msg, &erro);
     }
     //Aq é evidente o uso de uma pilha ja que as primeiras mensagens que aparecem sao as ultimas que foram enviadas
