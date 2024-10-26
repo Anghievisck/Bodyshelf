@@ -25,37 +25,35 @@ void Push(List *l, Dado *u){
         l->end = temp;
     }
 }
-
-
 Dado* Pop(List *l, int *e){
     if(l->total != 0){
         *e = 0;
         l->total--;
         Dado *u = l->start->info;
         Node *temp = l->start;
+        Dado *aux = l->start->info;
         l->start = l->start->next;
-
         free(temp);
-
+        free(aux);
         return(u);
     } else {
         *e=1;
     }
 }
-
 Dado* Out(List *l, int *e){
     if(l->total != 0){
         *e = 0;
         l->total--;
-
         Dado *u = l->end->info;
         Node *temp = l->end;
+        Dado *aux=l->end->info;
         l->end = l->end->previous;
         free(temp);
-
-        return(u);
+        free(u);
+        return(aux);
     } else {
         *e=1;
+        return(NULL);
     } 
 }
 

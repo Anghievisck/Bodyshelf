@@ -19,6 +19,7 @@ typedef struct msg{
 
 void RegisterUser(List *a);
 void ShowUsers(List *a);
+void Showmycolleges(List *a);
 void ShowColleges(User *a);
 void suggestions(User *a);
 void Collegesrequest(List *a);

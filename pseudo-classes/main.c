@@ -12,12 +12,10 @@ int main(){
     Create(rede);
     RegisterUser(rede);
     RegisterUser(rede);
-    RegisterUser(rede);
-    Node *temp=rede->start;
-    for(int i=0 ; i<rede->total; i++){
-        printf("%s usuario=%d\n", temp->info->info->username, i);
-        temp=temp->next;
-    }
+    Collegesrequest(rede);
+    Showrequests(rede);
+    Showmycolleges(rede);
+    Showmycolleges(rede);
     sendmsg(rede);
     showmsg(rede);
     

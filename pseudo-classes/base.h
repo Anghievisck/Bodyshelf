@@ -23,6 +23,7 @@ typedef struct list{
 
 void Create(List*);
 void Push(List*, Dado*);
+void del(List *);
 Dado* Pop(List*, int *);
 Dado* Out(List*, int *);
 Dado* Top(List*, int *);
