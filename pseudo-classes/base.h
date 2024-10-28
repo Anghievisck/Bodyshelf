@@ -5,6 +5,7 @@
 
 typedef struct user User;
 typedef struct msg Msg;
+typedef struct group Group;
 typedef struct node Node;
 
 typedef union{
@@ -27,5 +28,6 @@ Dado* Pop(List*, int *);
 Dado* Out(List*, int *);
 Dado* Top(List*, int *);
 Dado* Bottom(List*, int *);
+void TurnFirst(List *l, Node *node);
 #endif 
 

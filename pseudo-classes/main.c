@@ -13,26 +13,26 @@ int main(){
     int i;
     Create(rede);
     while(loop==1){
-        printf("1) cadastrar um usuário\n");
-        printf("2) listar usuários cadastrados e suas informações\n");
-        printf("3) pedir para ser parceiro de um usuário\n");
-        printf("4) avaliar lista de pedidos de parceria\n");
-        printf("5) enviar mensagem para um parceiro\n");
-        printf("6) ver mensagens recebidas\n");
-        printf("7) sugerir novas parcerias\n");
-        printf("8) reinicializar sistema\n");
-        printf("9) remover colega\n");
-        printf("10) bloquear usuario\n");
-        printf("11) remover bloqueio\n");
-        printf("12) criar grupo\n");
-        printf("13) adicionar colega ao grupo\n");
-        printf("14) avaliar lista de pedidos de grupos\n");
-        printf("15) enviar mensagem para grupo\n");
-        printf("16) passar liderança\n");
-        printf("17) Deletar um grupo\n");
-        printf("18) fecha programa\n");
+        printf("1) cadastrar um usuário \n");
+        printf("2) listar usuários cadastrados e suas informações \n");
+        printf("3) pedir para ser parceiro de um usuário \n");
+        printf("4) avaliar lista de pedidos de parceria \n");
+        printf("5) enviar mensagem para um parceiro \n");
+        printf("6) ver mensagens recebidas \n");
+        printf("7) sugerir novas parcerias \n");
+        printf("8) reinicializar sistema \n");
+        printf("9) remover colega \n");
+        printf("10) bloquear usuario \n");
+        printf("11) remover bloqueio \n");
+        printf("12) criar grupo \n");
+        printf("13) adicionar colega ao grupo \n");
+        printf("14) avaliar lista de pedidos de grupos \n");
+        printf("15) enviar mensagem para grupo \n");
+        printf("16) passar liderança \n");
+        printf("17) Deletar um grupo \n");
+        printf("18) fecha programa \n");
         printf("O que deseja fazer? ");
-        scanf(" %d", &i);
+        scanf(" %d ", &i);
         printf("\n");
         switch (i)
         {
