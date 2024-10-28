@@ -17,11 +17,12 @@ typedef struct msg{
     char name[250], username[12];
 }Msg;
 void dellrede(List *a);
+void PrintNet(List *a);
 void RegisterUser(List *a);
 void ShowUsers(List *a);
 void Showmycolleges(List *a);
 void ShowColleges(User *a);
-void suggestions(User *a);
+void Suggestions(List *a);
 void Collegesrequest(List *a);
 void addrequest(User *a, User *b);
 void Showrequests(List *a  );

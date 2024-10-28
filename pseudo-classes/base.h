@@ -8,7 +8,7 @@ typedef struct msg Msg;
 typedef struct node Node;
 
 typedef union{
-    User *info;
+    User *user;
     Msg  *msg;
 }Dado;
 typedef struct node{
@@ -23,7 +23,6 @@ typedef struct list{
 
 void Create(List*);
 void Push(List*, Dado*);
-void del(List *);
 Dado* Pop(List*, int *);
 Dado* Out(List*, int *);
 Dado* Top(List*, int *);

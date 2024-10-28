@@ -7,11 +7,13 @@
 typedef struct user User;
 void dellrede(List *allusers){
     //para cada usuario
-    for(int i=0; i<allusers->total; i++){
+    int total=allusers->total;
+    for(int i=0; i<total; i++){
         //pegando o primeiro usuario
-        User *temp=allusers->start->info->info;
+        User *temp=allusers->start->info->user;
         //apagando lista msm
-        for(int j=0; j<temp->msg->total; j++){
+        int k=temp->msg->total;
+        for(int j=0; j<k; j++){
             //apagando a info dentro do casulo
             free(temp->msg->start->info->msg);
             //apagando tanto o casulo quanto o bloco que esta o casulo com o Pop
@@ -19,6 +21,7 @@ void dellrede(List *allusers){
         }
         //apagando a lista em si
         free(temp->msg);
+        k=temp->colleges->total;
         for(int j=0; j<temp->colleges->total; j++){
             //apagando apenas o casulo quanto o bloco
             //note que diferente de msg a info dentro do casulo é um user que esta allusers logo deve ser apagado no decorrer do codigo
@@ -26,6 +29,7 @@ void dellrede(List *allusers){
         }
         //apagando a lista em si
         free(temp->colleges);
+        k=temp->request->total;
         for(int j=0; j<temp->request->total; j++){
             //mesma logica da lista colleges
             Pop(temp->request, NULL);
@@ -38,6 +42,21 @@ void dellrede(List *allusers){
     }
     //em tese allusers deve ficar que nem quando criado
     allusers->total=0;
+}
+void PrintNet(List *alluser){
+    int i=1;
+    if(alluser->total!=NULL){
+        Node *temp = alluser->start->info;
+        while(temp!=NULL){
+            printf("Usuario %d\n", i);
+            printf("Nome:%s\nApelido", temp->info->user->name, temp->info->user->username);
+            printf("Amigos\n:");
+            ShowColleges(temp);
+            temp=temp->next;
+        }
+    }else{
+        printf("Rede sem usuarios\n");
+    }
 }
 void RegisterUser(List *allUsers){
     //Aloco o "usuario"
@@ -64,12 +83,11 @@ void RegisterUser(List *allUsers){
     //bele aq fica + chato mas é o seguinte a lista guarda um *Dado nao um *usuario entao é necessario coloca esse seu usuario nesse tal de casulo do tipo *Dado
     //e esse casulo que vai para as listas esse pensamento vai acontecer em quase todas as funçoes do codigo
     Dado *casulo =(Dado*)malloc(sizeof(Dado));
-    casulo->info=usera;
+    casulo->user=usera;
     Push(allUsers, casulo);
 }
 //essa e simples apenas imprime a lista de colegas de um usuario
-void ShowColleges(User *user){
-    
+void ShowColleges(User *user){ 
     ShowUsers(user->colleges);
 }
 //essa diferente da funçao de cima le qual o usuario
@@ -87,10 +105,15 @@ void Showmycolleges(List *allusers){
     ShowColleges(user);
 }
 //essa recebe o usuario e printa todos os amigos dos amigos.obs provavelmento devo cria Mysuggestions mas isso é dbas de faze
-void suggestions(User *user){
+void Suggestions(List *alluser){
+    printf("Entre com o seu apelido:");
+    char username[12];
+    scanf("%s", &username);
+    printf("\n");
+    User *user = FindUserByUsernamne(alluser, username);
     Node *temp = user->colleges->start;
     for(int i=0; i<user->colleges->total; i++){
-        ShowColleges(temp->info->info);
+        ShowColleges(temp->info->user);
         temp=temp->next;
     }
 }
@@ -124,7 +147,7 @@ void addrequest(User *aceitas, User *aguardo){
     if(aceitas != NULL && aguardo != NULL){
         //novamente aq temos um *usuario e queremos *dado para colocar na lista de request do alvo entao eu faço o casulo
         Dado *casulo =(Dado*)malloc(sizeof(Dado));
-        casulo->info=aguardo;
+        casulo->user=aguardo;
         Push(aceitas->request, casulo);
     }
 }
@@ -146,28 +169,28 @@ void Showrequests(List  *allusers){
         return;
     }else{
         //percorrendo todos os termos da lista user->request pelo fim 
-        User *temp = user->request->end->info->info;
+        User *temp = user->request->end->info->user;
         while(temp != NULL){
             int loop=1;
             char choice;
             //para evitar comando invalidos
             while(loop==1){
                 printf("%s quer ser seu parcerio(a).Aceita (S/N)?", temp->username);
-                scanf("%c", &choice);
+                scanf(" %c", &choice);
                 printf("\n");
                 if(choice!='S' && choice!='N'){
                     printf("\nComando invalido\n");
                 }else{
-                    loop=0;
+                    break;
                 }
             }
-            //Se aceita eu adiciona cada um na lista de amigos do outro
+            //Se aceita eu adiciono cada um na lista de amigos do outro
             if(choice == 'S'){
                 Dado *casulo =(Dado*)malloc(sizeof(Dado));
-                casulo->info=temp;
+                casulo->user=temp;
                 Push(user->colleges, casulo);
                 Dado *casulo2 =(Dado*)malloc(sizeof(Dado));
-                casulo2->info=user;
+                casulo2->user=user;
                 Push(temp->colleges, casulo2);
             }
             //retirando o convite 
@@ -175,7 +198,7 @@ void Showrequests(List  *allusers){
             Out(user->request, &erro);
             //se a lista estiver nao estiver vazia eu pego o novo ultimo convite
             if(user->request->end!=NULL){
-                temp = user->request->end->info->info;
+                temp = user->request->end->info->user;
             }else{
                 //se a lista estiver vazia
                 return;
@@ -199,7 +222,7 @@ void sendmsg(List *allusers){
     printf("Digite o apelido de seu amigo:");
     scanf("%s", &target);
     printf("\n");
-    User *alvo = FindUserByUsernamne(allusers, target);
+    User *alvo = FindUserByUsernamne(user->colleges, target);
     if(alvo == NULL){
         printf("Usuario nao encontrado");
         return;
@@ -251,7 +274,7 @@ void ShowUsers(List *l){
     //percorre uma lista printando o apelido dos usuarios nela 
     Node *temp = l->start;
     while(temp != NULL){
-        printf("%s\n", temp->info->info->username);
+        printf("%s\n", temp->info->user->username);
         temp = temp->next;
     }
 };
@@ -260,11 +283,10 @@ User* FindUserByUsernamne(List *l, char target[USERNAME]){
     //se nao ela retorna NULL
     Node *temp = l->start;
     while(temp != NULL){
-        if(strcmp(target, temp->info->info->username)==0){
-            return(temp->info->info);
+        if(strcmp(target, temp->info->user->username)==0){
+            return(temp->info->user);
         }
         temp = temp->next;
     }
-
     return (NULL);
 }

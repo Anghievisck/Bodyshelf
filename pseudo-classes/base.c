@@ -49,14 +49,13 @@ Dado* Out(List *l, int *e){
         l->total--;
         Dado *u = l->end->info;
         Node *temp = l->end;
-        Dado *aux=l->end->info;
         l->end = l->end->previous;
         if(l->end==NULL){
             l->start==NULL;
         }
         free(temp);
         free(u);
-        return(aux);
+        return(u);
     } else {
         *e=1;
         return(NULL);
