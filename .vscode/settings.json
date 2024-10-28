@@ -5,6 +5,7 @@
         "chrono": "c",
         "system_error": "c",
         "xlocale": "c",
-        "sstream": "c"
+        "sstream": "c",
+        "stdlib.h": "c"
     }
 }

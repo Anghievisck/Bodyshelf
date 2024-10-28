@@ -11,13 +11,24 @@ void dellrede(List *allusers){
     Node *aux=allusers->start;
     for(int i=0; i<total; i++){
         User *temp=aux->info->user;
-        //apagando lista msm
+        int k=temp->groupleader->total;
+        for(int j=0; j<k; j++){
+            DelgropSys(temp->groupleader->start, temp);
+        }
+        aux=aux->next;
+    }
+    for(int i=0; i<total; i++){
+        User *temp=allusers->start->info->user;
+        //Ja limpos
+        int erro;
+        free(temp->groups);
+        free(temp->groupleader);
         int k=temp->msg->total;
         for(int j=0; j<k; j++){
             //apagando a info dentro do casulo
             free(temp->msg->start->info->msg);
             //apagando tanto o casulo quanto o bloco que esta o casulo com o Pop
-            Pop(temp->msg, NULL);
+            Pop(temp->msg, &erro);
         }
         //apagando a lista em si
         free(temp->msg);
@@ -25,44 +36,28 @@ void dellrede(List *allusers){
         for(int j=0; j<k; j++){
             //apagando apenas o casulo quanto o bloco
             //note que diferente de msg a info dentro do casulo é um user que esta allusers logo deve ser apagado no decorrer do codigo
-            Pop(temp->colleges, NULL);
+            Pop(temp->colleges, &erro);
         }
         //apagando a lista em si
         free(temp->colleges);
         k=temp->request->total;
         for(int j=0; j<k; j++){
             //mesma logica da lista colleges
-            Pop(temp->request, NULL);
+            Pop(temp->request, &erro);
         }
         free(temp->request);
         k=temp->blacklist->total;
         for(int j=0; j<k; j++){
-            Pop(temp->blacklist, NULL);
-        }
-        k=temp->groupsrequest->total;
-        for(int j=0; j<k; j++){
-            Pop(temp->groupsrequest, NULL);
+            Pop(temp->blacklist, &erro);
         }
         free(temp->blacklist);
-        printf("to aq");
-        k=temp->groupleader->total;
+        k=temp->groupsrequest->total;
         for(int j=0; j<k; j++){
-            DelgropSys(temp->groupleader->start, temp);
+            Pop(temp->groupsrequest, &erro);
         }
-        printf("aq tambem");
-        aux=aux->next;
-    }
-    printf("\nto aq\n");
-    //pela forma que eu escolhi faze os grupos prefiri separar aq pois fica +seguro e simples;
-    for(int i=0; i<total; i++){
-        User *temp=allusers->start->info->user;
-        free(temp->groups);
-        free(temp->groupleader);
+        free(temp->groupsrequest);
         free(temp);
-        int erro;
         Pop(allusers, &erro);
-        //apagando o usuario finalmente
-        free(temp);
     }
     //em tese allusers deve ficar que nem quando criado
     allusers->total=0;
@@ -80,7 +75,7 @@ void PrintNet(List *alluser){
             printf("Bloqueados:\n");
             ShowBlocks(temp->info->user);
             printf("\n");
-            printf("E faz parte destes grupos:\n ");
+            printf("E faz parte destes grupos:\n2");
             Showgroups(temp->info->user);
             temp=temp->next;
             i++;
@@ -88,48 +83,6 @@ void PrintNet(List *alluser){
     }else{
         printf("Rede sem usuarios\n");
     }
-}
-void PassTheCrown(List *allusers){
-    printf("Entre com o seu apelido:");
-    char username[12];
-    scanf("%s", &username);
-    printf("\n");
-    User *user = FindUserByUsernamne(allusers, username);
-    if(user == NULL){
-        printf("Usuario nao encontrado");
-        return;
-    }
-    if(user->groupleader->total==0){
-        printf("Voce nao é lider de nenhum grupo :p.\n");
-        return;
-    }
-    printf("Voce é lider destes grupos:");
-    ShowLeadergroups(user);
-    char temp[12];
-    printf("Escolha um Grupo: ");
-    scanf("%s", &temp);
-    Node *grupo;
-    grupo=FindGroupNodeByName(user->groupleader, temp);
-    if(grupo==NULL){
-        printf("Nenhum grupo selecionado.\n");
-        return;
-    }
-    printf("Esses são os membros deste grupo:\n");
-    ShowUsers(grupo->info->grp->members);
-    printf("Qual sera o proximo lider: ");
-    char target[12];
-    scanf("%s ", &target);
-    User *alvo=FindUserByUsernamne(grupo->info->grp->members, target);
-    if(alvo==NULL){
-        printf("Usuario nao encontrado.\n");
-        return;
-    }
-    Dado *casulo =(Dado*)malloc(sizeof(Dado));
-    casulo->grp=grupo->info->grp;
-    Push(alvo->groupleader, casulo);
-    TurnFirst(user->groupleader, grupo);
-    int erro;
-    Pop(user->groupleader, &erro);
 }
 void DelgroupUser(List *allusers){
     printf("Entre com o seu apelido:");
@@ -168,21 +121,36 @@ void DelgroupUser(List *allusers){
 }
 void DelgropSys(Node *grupo, User *leader){
     int erro;
+    int k=grupo->info->grp->members->total;
+    Group *grp=grupo->info->grp;
     User *temp=grupo->info->grp->members->start->info->user;
-    while(temp!=NULL){
-        printf("user :%s\n", temp->username);
+    if(k==1){
+        Node *aux=FindGroupNodeByName(leader->groups, grupo->info->grp->groupname);
+        Pop(grp->members, &erro);
+        TurnFirst(leader->groups, aux);
+        Pop(leader->groups, &erro);
+        free(grp->members);
+        free(grp);
+        TurnFirst(leader->groupleader, grupo);
+        Pop(leader->groupleader, &erro);
+        return;
+    }
+    for(int i=0; i<k; i++){
         Node *aux=FindGroupNodeByName(temp->groups, grupo->info->grp->groupname);
+        Pop(grupo->info->grp->members, &erro);
         TurnFirst(temp->groups, aux);
         Pop(temp->groups, &erro);
-        Pop(grupo->info->grp->members, &erro);
-        temp = grupo->info->grp->members->start->info->user;
+        if(grp->members->total!=0){
+            temp = grupo->info->grp->members->start->info->user;
+        }
     }
-    printf("aq tambem\n");
-    free(grupo->info->grp);
     free(grupo->info->grp->members);
+    free(grupo->info->grp);
     TurnFirst(leader->groupleader, grupo);
     Pop(leader->groupleader, &erro);
+    return;
 }
+
 void Makegroup(List *allusers){
     printf("Entre com o seu apelido:");
     char username[12];
@@ -193,9 +161,9 @@ void Makegroup(List *allusers){
         printf("Usuario nao encontrado");
         return;
     }
-    Group *grp =(Group*)malloc(sizeof(Group));
-    grp->members=malloc(sizeof(List));
-    Create(grp->members);
+    // Group *grp =(Group*)malloc(sizeof(Group));
+    Group *grp = (Group*)malloc(sizeof(Group));
+    grp->members=Create(grp->members);
     printf("Entre com o nome do grupo: ");
     scanf("%s", grp->groupname);
     Dado *casulo =(Dado*)malloc(sizeof(Dado));
@@ -235,15 +203,7 @@ void AddCollegeforGroup(List *allusers){
         printf("Ele ja esta no grupo :p\n");
         return;
     }
-    User *alvo = FindUserByUsernamne(allusers, target);
-    if(FindUserByUsernamne(alvo->blacklist, user->username)!=NULL){
-        printf("voce esta bloqueado :p\n");
-        return;
-    }
-    if(FindUserByUsernamne(user->blacklist, alvo->username)!=NULL){
-        printf("Tu primeiro da Block no mano e quer senta na janelinha, desbloqueia antes primeiro.\n");
-        return;
-    }
+    User *alvo = FindUserByUsernamne(user->colleges, target);
     Dado *casulo =(Dado*)malloc(sizeof(Dado));
     Dado *casulo2 =(Dado*)malloc(sizeof(Dado));
     casulo->grp=grupo;
@@ -337,7 +297,7 @@ void SendmsgGroup(List *allusers){
     Node *aux=grupo->members->start;
     while(aux!=NULL){
         Msg *txt = (Msg*)malloc(sizeof(Msg));
-        strcpy(txt->name, temp);
+        strcpy(txt->name, tempo);
         strcpy(txt->username, username);
         strcpy(txt->chat, grupo->groupname);
         Dado *casulo =(Dado*)malloc(sizeof(Dado));
@@ -412,22 +372,14 @@ void RegisterUser(List *allUsers){
         }
     }
 
-    //Aloco as listas que estao no usuario, nao sei pq precisa achei que ja vinha com o usuario mas nao vem
-    user->colleges = malloc(sizeof(List));
-    user->msg = malloc(sizeof(List));
-    user->request = malloc(sizeof(List));
-    user->blacklist = malloc(sizeof(List));
-    user->groups = malloc(sizeof(List));
-    user->groupleader = malloc(sizeof(List));
-    user->groupsrequest = malloc(sizeof(List));
     //crio as listas do usuario
-    Create(user->colleges);
-    Create(user->request);
-    Create(user->msg);
-    Create(user->blacklist);
-    Create(user->groups);
-    Create(user->groupleader);
-    Create(user->groupsrequest);
+    user->colleges=Create(user->colleges);
+    user->request=Create(user->request);
+    user->msg=Create(user->msg);
+    user->blacklist=Create(user->blacklist);
+    user->groups=Create(user->groups);
+    user->groupleader=Create(user->groupleader);
+    user->groupsrequest=Create(user->groupsrequest);
     //bele aq fica + chato mas é o seguinte a lista guarda um *Dado nao um *usuario entao é necessario coloca esse seu usuario nesse tal de casulo do tipo *Dado
     //e esse casulo que vai para as listas esse pensamento vai acontecer em quase todas as funçoes do codigo
     Dado *casulo =(Dado*)malloc(sizeof(Dado));
@@ -468,6 +420,11 @@ void Block(List *allusers){
         TurnFirst(user->colleges, temp);
         Pop(user->colleges, &erro);
         printf("Amizade removida automaticamente\n");
+        Dado *casulo =(Dado*)malloc(sizeof(Dado));
+        casulo->user=temp->info->user;
+        Push(user->blacklist, casulo);
+        printf("Usuario bloqueado\n");
+        return;
     }
     temp=FindNodeByUsernamne(user->request, target);
     if(temp!=NULL){
@@ -487,6 +444,8 @@ void Block(List *allusers){
         int erro;
         Pop(alvo->request, &erro);
         printf("O convite enviado por voce a este usuario foi automaticamente removido\n");
+    }else{
+        printf("certo");
     }
     Dado *casulo =(Dado*)malloc(sizeof(Dado));
     casulo->user=alvo;
@@ -542,16 +501,20 @@ void Collegesrequest(List *allusers){
         return;
     }
     User *alvo = FindUserByUsernamne(allusers, target);
+    if(alvo == NULL){
+        printf("Usuario nao encontrado");
+        return;
+    }
+    if(FindUserByUsernamne(alvo->request, username)!=NULL){
+        printf("Ja tem um pedido encaminhado.\n");
+        return;
+    }
     if(FindUserByUsernamne(alvo->blacklist, user->username)!=NULL){
         printf("voce esta bloqueado :p\n");
         return;
     }
     if(FindUserByUsernamne(user->blacklist, alvo->username)!=NULL){
         printf("Tu primeiro da Block no mano e quer senta na janelinha, desbloqueia antes primeiro.\n");
-        return;
-    }
-    if(alvo == NULL){
-        printf("Usuario nao encontrado");
         return;
     }
     //logo abaixo explico essa funçao
@@ -729,11 +692,11 @@ void showmsg(List *allusers){
     }
     //Se a lista msg estiver vazia tem ate msm uma super recomendação
     if(user->msg->start == NULL){
-        printf("Sem mensagens, procure + amigos usando a funcao suggestions");
+        printf("Sem mensagens, procure + amigos usando a funcao suggestions\n");
         return;
     }
     //aq percorro a lista msg 
-    printf("Suas mensagens sao:");
+    printf("Suas mensagens sao:\n");
     while(user->msg->start!=NULL){
         //bele a logica das é a seguinte para acessar a nossa mensgens em expecifico temos o seguinte caminho
         //todo usuario tem a lista msg essa lista encadeada tem um começo que é um bloco que tem como info um * da union essa union pode guarda tanto um usuario/
@@ -746,7 +709,7 @@ void showmsg(List *allusers){
         Pop(user->msg, &erro);
     }
     //Aq é evidente o uso de uma pilha ja que as primeiras mensagens que aparecem sao as ultimas que foram enviadas
-    printf("Mensagens exibidas");
+    printf("Mensagens exibidas\n");
 }
 void ShowUsers(List *l){
     //percorre uma lista printando o apelido dos usuarios nela 

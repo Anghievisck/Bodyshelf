@@ -3,7 +3,8 @@
 #include <string.h>
 #include "base.h"
 
-void Create(List *l){
+List* Create(List *l){
+    l = (List *)malloc(sizeof(List)); 
     l->end = NULL;
     l->start = NULL;
     l->total = 0;
@@ -39,7 +40,7 @@ void TurnFirst(List *l, Node *node){
         l->start->previous=node;
     }
 }
-Dado* Pop(List *l, int *e){
+void Pop(List *l, int *e){
     if(l->total != 0){
         *e = 0;
         l->total--;
@@ -52,9 +53,10 @@ Dado* Pop(List *l, int *e){
         }
         free(temp);
         free(aux);
-        return(u);
+        return;
     } else {
         *e=1;
+        return;
     }
 }
 Dado* Out(List *l, int *e){

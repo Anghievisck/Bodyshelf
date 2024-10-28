@@ -46,7 +46,6 @@ void ShowLeadergroups(User *user);
 void Showgroups(User *user);
 void DelgroupUser(List *allusers);
 void DelgropSys(Node *grupo, User *leader);
-void PassTheCrown(List *allusers);
 Node* FindNodeByUsernamne(List *a, char[USERNAME]);
 User* FindUserByUsernamne(List *a, char[USERNAME]);
 

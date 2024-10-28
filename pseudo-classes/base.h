@@ -22,9 +22,9 @@ typedef struct list{
     Node *start, *end;
 }List;
 
-void Create(List*);
+List* Create(List*);
 void Push(List*, Dado*);
-Dado* Pop(List*, int *);
+void Pop(List*, int *);
 Dado* Out(List*, int *);
 Dado* Top(List*, int *);
 Dado* Bottom(List*, int *);
