@@ -4,6 +4,7 @@
         "base.h": "c",
         "chrono": "c",
         "system_error": "c",
-        "xlocale": "c"
+        "xlocale": "c",
+        "sstream": "c"
     }
 }

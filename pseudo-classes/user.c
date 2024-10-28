@@ -22,7 +22,7 @@ void dellrede(List *allusers){
         //apagando a lista em si
         free(temp->msg);
         k=temp->colleges->total;
-        for(int j=0; j<temp->colleges->total; j++){
+        for(int j=0; j<k; j++){
             //apagando apenas o casulo quanto o bloco
             //note que diferente de msg a info dentro do casulo é um user que esta allusers logo deve ser apagado no decorrer do codigo
             Pop(temp->colleges, NULL);
@@ -30,13 +30,14 @@ void dellrede(List *allusers){
         //apagando a lista em si
         free(temp->colleges);
         k=temp->request->total;
-        for(int j=0; j<temp->request->total; j++){
+        for(int j=0; j<k; j++){
             //mesma logica da lista colleges
             Pop(temp->request, NULL);
         }
         free(temp->request);
         //apagando o bloco e o casulo em que o usuario esta
-        Pop(allusers, NULL);
+        int erro;
+        Pop(allusers, &erro);
         //apagando o usuario finalmente
         free(temp);
     }
@@ -61,40 +62,47 @@ void PrintNet(List *alluser){
 }
 void RegisterUser(List *allUsers){
     //Aloco o "usuario"
-    User *usera = (User*)malloc(sizeof(User));
-    if (usera == NULL) {
+    User *user = (User*)malloc(sizeof(User));
+    if (user == NULL) {
         fprintf(stderr, "Error allocating memory for user\n");
         return;
     }
     //leitura dos dados do usuario
     printf("Digite seu name: ");
-    scanf("%s", usera->name);
+    getchar(); 
+    fgets(user->name, sizeof(user->name), stdin);
+    user->name[strcspn(user->name, "\n")] = 0;
     printf("\n");
     int loop=1;
     printf("Digite seu username: ");
     while(loop==1){
-        scanf("%s", usera->username);
+        fgets(user->username, sizeof(user->username), stdin);
+        user->username[strcspn(user->username, "\n")] = 0;
         printf("\n");
-        if(FindUserByUsernamne(allUsers, usera->username)==NULL){
-            loop=0;
+        if (strchr(user->username,' ')) {
+            printf("Por favor retire o espaco do apelido.\nPor favor informe outro: ");
         }else{
-            printf("Seu username ja existe...\nPor favor informe outro: ");
+            if(FindUserByUsernamne(allUsers, user->username)==NULL){
+                loop=0;
+            }else{
+                printf("Seu username ja existe...\nPor favor informe outro: ");
+            }
         }
     }
 
     //Aloco as listas que estao no usuario, nao sei pq precisa achei que ja vinha com o usuario mas nao vem
-    usera->colleges = malloc(sizeof(List));
-    usera->msg = malloc(sizeof(List));
-    usera->request = malloc(sizeof(List));
+    user->colleges = malloc(sizeof(List));
+    user->msg = malloc(sizeof(List));
+    user->request = malloc(sizeof(List));
 
     //crio as listas do usuario
-    Create(usera->colleges);
-    Create(usera->request);
-    Create(usera->msg);
+    Create(user->colleges);
+    Create(user->request);
+    Create(user->msg);
     //bele aq fica + chato mas é o seguinte a lista guarda um *Dado nao um *usuario entao é necessario coloca esse seu usuario nesse tal de casulo do tipo *Dado
     //e esse casulo que vai para as listas esse pensamento vai acontecer em quase todas as funçoes do codigo
     Dado *casulo =(Dado*)malloc(sizeof(Dado));
-    casulo->user=usera;
+    casulo->user=user;
     Push(allUsers, casulo);
 }
 //essa e simples apenas imprime a lista de colegas de um usuario
@@ -153,6 +161,28 @@ void Collegesrequest(List *allusers){
     //logo abaixo explico essa funçao
     addrequest(alvo, user);
     printf("Pedido encaminhado com sucesso\n");
+}
+void RemoveCollege(List *allusers){
+    //usuario que esta enviando
+    printf("Entre com o seu apelido:");
+    char username[12];
+    scanf("%s", &username);
+    printf("\n");
+    User *user = FindUserByUsernamne(allusers, username);
+    if(user == NULL){
+        printf("Usuario nao encontrado");
+        return;
+    }
+    //usuario alvo do convite
+    char target[12];
+    printf("Digite o apelido de quem vc quer remover:");
+    scanf("%s", &target);
+    printf("\n");
+    User *alvo = FindUserByUsernamne(user->colleges, target);
+    if(alvo == NULL){
+        printf("Usuario nao encontrado");
+        return;
+    }
 }
 void addrequest(User *aceitas, User *aguardo){
     if(aceitas != NULL && aguardo != NULL){
@@ -240,11 +270,10 @@ void sendmsg(List *allusers){
     }
     //lendo a msg
     Msg *txt = (Msg*)malloc(sizeof(Msg));
-    printf("Entre com a mensagem (sem espacos por favor :p):\n");
-    char esteregg[250];
-    //scanf("%250s", &txt->name);
-    fgets(esteregg, sizeof(esteregg), stdin);
-    strcpy(txt->name, esteregg);
+    printf("Entre com a mensagem :");
+    getchar(); 
+    fgets(txt->name, sizeof(txt->name), stdin);
+    printf("\n");
     //"assinando" a msg
     strcpy(txt->username, username);
     //igual com usuario é necessario o casulo para colocar a msg numa lista
