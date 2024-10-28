@@ -53,6 +53,15 @@ int main(){
         case 9:
             loop=0;
         break;
+        case 10:
+            RemoveCollege(rede);
+        break;
+        case 11:
+            Block(rede);
+        break;
+        case 12:
+            RemoveBlock(rede);
+        break;
         default:
             printf("Nao seja um macaco");
         break;

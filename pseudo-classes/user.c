@@ -35,6 +35,11 @@ void dellrede(List *allusers){
             Pop(temp->request, NULL);
         }
         free(temp->request);
+        k=temp->blacklist->total;
+        for(int j=0; j<k; j++){
+            Pop(temp->blacklist, NULL);
+        }
+        free(temp->blacklist);
         //apagando o bloco e o casulo em que o usuario esta
         int erro;
         Pop(allusers, &erro);
@@ -59,6 +64,9 @@ void PrintNet(List *alluser){
     }else{
         printf("Rede sem usuarios\n");
     }
+}
+void Makegroup(List *alluser){
+
 }
 void RegisterUser(List *allUsers){
     //Aloco o "usuario"
@@ -94,11 +102,12 @@ void RegisterUser(List *allUsers){
     user->colleges = malloc(sizeof(List));
     user->msg = malloc(sizeof(List));
     user->request = malloc(sizeof(List));
-
+    user->blacklist = malloc(sizeof(List));
     //crio as listas do usuario
     Create(user->colleges);
     Create(user->request);
     Create(user->msg);
+    Create(user->blacklist);
     //bele aq fica + chato mas é o seguinte a lista guarda um *Dado nao um *usuario entao é necessario coloca esse seu usuario nesse tal de casulo do tipo *Dado
     //e esse casulo que vai para as listas esse pensamento vai acontecer em quase todas as funçoes do codigo
     Dado *casulo =(Dado*)malloc(sizeof(Dado));
@@ -108,6 +117,61 @@ void RegisterUser(List *allUsers){
 //essa e simples apenas imprime a lista de colegas de um usuario
 void ShowColleges(User *user){ 
     ShowUsers(user->colleges);
+}
+//Da o famigerado block
+void Block(List *allusers){
+    printf("Entre com o seu apelido:");
+    char username[12];
+    scanf("%s", &username);
+    printf("\n");
+    User *user = FindUserByUsernamne(allusers, username);
+    if(user == NULL){
+        printf("Usuario nao encontrado");
+        return;
+    }
+    //usuario alvo do block
+    char target[12];
+    printf("Digite o apelido de quem quer ser parcerio:");
+    scanf("%s", &target);
+    printf("\n");
+    if(FindUserByUsernamne(user->blacklist, target)!=NULL){
+        printf("Ele ja esta bloqueado :p\n");
+        return;
+    }
+    //caso eles sejam amigos
+    Node *temp=FindNodeByUsernamne(user->colleges, target);
+    if(temp!=NULL){
+        Node *aux=FindNodeByUsernamne(temp->info->user->colleges, username);
+        TurnFirst(user->colleges, temp);
+        TurnFirst(temp->info->user->colleges, user);
+        int erro;
+        Pop(user->colleges, &erro);
+        Pop(temp->info->user->colleges, &erro);
+        printf("Amizade removida automaticamente\n");
+    }
+    temp=FindNodeByUsernamne(user->request, target);
+    if(temp!=NULL){
+        TurnFirst(user->request,temp);
+        int erro;
+        Pop(user->request, &erro);
+        printf("O convite enviado a voce por este usuario foi automaticamente removido\n");
+    }
+    User *alvo = FindUserByUsernamne(allusers, target);
+    if(alvo == NULL){
+        printf("Usuario nao encontrado.\n");
+        return;
+    }
+    temp=FindNodeByUsernamne(alvo->request, username);
+    if(user->username!=NULL){
+        TurnFirst(alvo->request,temp);
+        int erro;
+        Pop(alvo->request, &erro);
+        printf("O convite enviado por voce a este usuario foi automaticamente removido\n");
+    }
+    Dado *casulo =(Dado*)malloc(sizeof(Dado));
+    casulo->user=alvo;
+    Push(user->blacklist, casulo);
+    printf("Usuario bloqueado");
 }
 //essa diferente da funçao de cima le qual o usuario
 void Showmycolleges(List *allusers){
@@ -153,7 +217,19 @@ void Collegesrequest(List *allusers){
     printf("Digite o apelido de quem quer ser parcerio:");
     scanf("%s", &target);
     printf("\n");
+    if(FindUserByUsernamne(user->colleges, target)!=NULL){
+        printf("Ele ja é seu amigo :p\n");
+        return;
+    }
     User *alvo = FindUserByUsernamne(allusers, target);
+    if(FindUserByUsernamne(alvo->blacklist, user->username)!=NULL){
+        printf("voce esta bloqueado :p\n");
+        return;
+    }
+    if(FindUserByUsernamne(user->blacklist, user->username)!=NULL){
+        printf("Tu primeiro da Block no mano e quer senta na janelinha, desbloqueia antes primeiro.\n");
+        return;
+    }
     if(alvo == NULL){
         printf("Usuario nao encontrado");
         return;
@@ -174,15 +250,53 @@ void RemoveCollege(List *allusers){
         return;
     }
     //usuario alvo do convite
+    printf("Seus amigos são:\n");
+    ShowColleges(user);
     char target[12];
-    printf("Digite o apelido de quem vc quer remover:");
+    printf("Digite o apelido de quem voce quer remover:");
     scanf("%s", &target);
     printf("\n");
-    User *alvo = FindUserByUsernamne(user->colleges, target);
+    Node *alvo = FindNodeByUsernamne(user->colleges, target);
+    if(alvo == NULL){
+        printf("Amigo nao encontrado");
+        return;
+    }
+    Node *aux=FindNodeByUsernamne(alvo->info->user->colleges, username);
+    TurnFirst(alvo->info->user->colleges, user);
+    TurnFirst(user->colleges, alvo);
+    int erro;
+    Pop(user->colleges, &erro);
+    Pop(alvo->info->user->colleges, &erro);
+}
+void RemoveBlock(List *allusers){
+    //usuario que esta enviando
+    printf("Entre com o seu apelido:");
+    char username[12];
+    scanf("%s", &username);
+    printf("\n");
+    User *user = FindUserByUsernamne(allusers, username);
+    if(user == NULL){
+        printf("Usuario nao encontrado");
+        return;
+    }
+    //usuario alvo do convite
+    printf("As pessoas bloqueadas por voce são:\n");
+    ShowBlocks(user);
+    char target[12];
+    printf("Digite o apelido de quem voce quer remover:");
+    scanf("%s", &target);
+    printf("\n");
+    Node *alvo = FindNodeByUsernamne(user->colleges, target);
     if(alvo == NULL){
         printf("Usuario nao encontrado");
         return;
     }
+    TurnFirst(user->blacklist, alvo);
+    int erro;
+    Pop(user->blacklist, &erro);
+}
+void ShowBlocks(User *user){
+    ShowUsers(user->blacklist);
 }
 void addrequest(User *aceitas, User *aguardo){
     if(aceitas != NULL && aguardo != NULL){
@@ -276,6 +390,7 @@ void sendmsg(List *allusers){
     printf("\n");
     //"assinando" a msg
     strcpy(txt->username, username);
+    strcpy(txt->chat, "DM");
     //igual com usuario é necessario o casulo para colocar a msg numa lista
     Dado *casulo =(Dado*)malloc(sizeof(Dado));
     casulo->msg=txt;
@@ -304,7 +419,7 @@ void showmsg(List *allusers){
         //todo usuario tem a lista msg essa lista encadeada tem um começo que é um bloco que tem como info um * da union essa union pode guarda tanto um usuario/
         //quanto uma msg mas aq queremos uma msg entao com user->msg-start->info->msg chegamos na primeira mensagem da lista, o seu username é a sua assinatura
         //ja name msg em si
-        printf("(%s)%s\n", user->msg->start->info->msg->username, user->msg->start->info->msg->name);
+        printf("enviado por(%s) no chat%s, %s\n", user->msg->start->info->msg->username, user->msg->start->info->msg->chat ,user->msg->start->info->msg->name);
         int erro;
         //retiro a primeira msg.
         free(user->msg->start->info->msg);
@@ -321,6 +436,18 @@ void ShowUsers(List *l){
         temp = temp->next;
     }
 };
+Node* FindNodeByUsernamne(List *l, char target[USERNAME]){
+    //percorre uma lista verificando se ha um usuario com o mesmo nome que o dado se sim ela devolve esse usuario
+    //se nao ela retorna NULL
+    Node *temp = l->start;
+    while(temp != NULL){
+        if(strcmp(target, temp->info->user->username)==0){
+            return(temp);
+        }
+        temp = temp->next;
+    }
+    return (NULL);
+}
 User* FindUserByUsernamne(List *l, char target[USERNAME]){
     //percorre uma lista verificando se ha um usuario com o mesmo nome que o dado se sim ela devolve esse usuario
     //se nao ela retorna NULL

@@ -25,6 +25,20 @@ void Push(List *l, Dado *u){
         l->end = temp;
     }
 }
+//Se usar tome cuidade para ter certeza que Node esta na sua lista :p
+void TurnFirst(List *l, Node *node){
+    if(node!=l->start){
+        node->previous->next=node->next;
+        if(node->next!=NULL){
+            node->next->previous=node->previous;
+        }else{
+            l->end=node->previous;
+        }
+        node->previous==NULL;
+        node->next==l->start;
+        l->start->previous=node;
+    }
+}
 Dado* Pop(List *l, int *e){
     if(l->total != 0){
         *e = 0;

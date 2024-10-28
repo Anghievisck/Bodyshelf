@@ -15,7 +15,6 @@ typedef struct node{
     Dado *info;
     Node *next, *previous;
 }Node;
-
 typedef struct list{
     int total;
     Node *start, *end;
