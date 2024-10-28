@@ -11,7 +11,7 @@ typedef struct user User;
 typedef struct msg Msg;
 typedef struct user{
     char name[NAME], username[USERNAME];
-    List *colleges, *request, *msg, *blacklist, *groups, *leadergroups;
+    List *colleges, *request, *msg, *blacklist, *groups, *groupleader, *groupsrequest;
 }User;
 typedef struct msg{
     char name[250], username[12], chat[12];
@@ -36,6 +36,17 @@ void RemoveCollege(List *a);
 void RemoveBlock(List *a);
 void Block(List *a);
 void ShowBlocks(User *a);
+void Makegroup(List *a);
+void AddCollegeforGroup(List *a);
+void Groupsrequests(List *a);
+void SendmsgGroup(List *a);
+Group* FindGroupByName(List *l, char target[12]);
+void ShowLeadergroups(User *user);
+void Showgroups(User *user);
+void DelgroupUser(List *allusers);
+void DelgropSys(Group *grupo, User *leader);
+void PassTheCrown(List *allusers);
 Node* FindNodeByUsernamne(List *a, char[USERNAME]);
 User* FindUserByUsernamne(List *a, char[USERNAME]);
+
 #endif

@@ -10,6 +10,7 @@ typedef struct node Node;
 typedef union{
     User *user;
     Msg  *msg;
+    Group *grp;
 }Dado;
 typedef struct node{
     Dado *info;
