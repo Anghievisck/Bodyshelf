@@ -21,6 +21,16 @@ int main(){
         printf("6) ver mensagens recebidas\n");
         printf("7) sugerir novas parcerias\n");
         printf("8) reinicializar sistema\n");
+        printf("9) remover colega\n");
+        printf("10) bloquear usuario\n");
+        printf("11) remover bloqueio\n");
+        printf("12) criar grupo\n");
+        printf("13) adicionar colega ao grupo\n");
+        printf("14) avaliar lista de pedidos de grupos\n");
+        printf("15) enviar mensagem para grupo\n");
+        printf("16) passar liderança\n");
+        printf("17) Deletar um grupo\n");
+        printf("18) fecha programa\n");
         printf("O que deseja fazer? ");
         scanf(" %d", &i);
         printf("\n");
@@ -50,17 +60,35 @@ int main(){
         case 8:
             dellrede(rede);
         break;
-        case 9:
+        case 18:
             loop=0;
         break;
-        case 10:
+        case 9:
             RemoveCollege(rede);
         break;
-        case 11:
+        case 10:
             Block(rede);
         break;
-        case 12:
+        case 11:
             RemoveBlock(rede);
+        break;
+        case 12:
+            Makegroup(rede);
+        break;
+        case 13:
+            AddCollegeforGroup(rede);
+        break;
+        case 14:
+            Groupsrequests(rede);
+        break;
+        case 15:
+            SendmsgGroup(rede);
+        break;
+        case 16:
+            PassTheCrown(rede);
+        break;
+        case 17:
+            DelgroupUser(rede);
         break;
         default:
             printf("Nao seja um macaco");
