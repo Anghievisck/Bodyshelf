@@ -45,14 +45,15 @@ void dellrede(List *allusers){
 }
 void PrintNet(List *alluser){
     int i=1;
-    if(alluser->total!=NULL){
-        Node *temp = alluser->start->info;
+    if(alluser->total!=0){
+        Node *temp = alluser->start;
         while(temp!=NULL){
             printf("Usuario %d\n", i);
-            printf("Nome:%s\nApelido", temp->info->user->name, temp->info->user->username);
+            printf("Nome:%s\nApelido:%s\n", temp->info->user->name, temp->info->user->username);
             printf("Amigos\n:");
-            ShowColleges(temp);
+            ShowColleges(temp->info->user);
             temp=temp->next;
+            i++;
         }
     }else{
         printf("Rede sem usuarios\n");
@@ -65,17 +66,27 @@ void RegisterUser(List *allUsers){
         fprintf(stderr, "Error allocating memory for user\n");
         return;
     }
-    //Aloco as listas que estao no usuario, nao sei pq precisa achei que ja vinha com o usuario mas nao vem
-    usera->colleges = malloc(sizeof(List));
-    usera->msg = malloc(sizeof(List));
-    usera->request = malloc(sizeof(List));
     //leitura dos dados do usuario
     printf("Digite seu name: ");
     scanf("%s", usera->name);
     printf("\n");
-    printf("Digite seu username:");
-    scanf("%s", usera->username);
-    printf("\n");
+    int loop=1;
+    printf("Digite seu username: ");
+    while(loop==1){
+        scanf("%s", usera->username);
+        printf("\n");
+        if(FindUserByUsernamne(allUsers, usera->username)==NULL){
+            loop=0;
+        }else{
+            printf("Seu username ja existe...\nPor favor informe outro: ");
+        }
+    }
+
+    //Aloco as listas que estao no usuario, nao sei pq precisa achei que ja vinha com o usuario mas nao vem
+    usera->colleges = malloc(sizeof(List));
+    usera->msg = malloc(sizeof(List));
+    usera->request = malloc(sizeof(List));
+
     //crio as listas do usuario
     Create(usera->colleges);
     Create(usera->request);
@@ -229,8 +240,11 @@ void sendmsg(List *allusers){
     }
     //lendo a msg
     Msg *txt = (Msg*)malloc(sizeof(Msg));
-    printf("Entre com a mensagem:");
-    scanf("%s", &txt->name);
+    printf("Entre com a mensagem (sem espacos por favor :p):\n");
+    char esteregg[250];
+    //scanf("%250s", &txt->name);
+    fgets(esteregg, sizeof(esteregg), stdin);
+    strcpy(txt->name, esteregg);
     //"assinando" a msg
     strcpy(txt->username, username);
     //igual com usuario é necessario o casulo para colocar a msg numa lista

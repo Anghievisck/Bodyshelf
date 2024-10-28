@@ -27,7 +27,6 @@ int main(){
         switch (i)
         {
         case 1:
-            printf("\ntest\n");
             RegisterUser(rede);
         break;
         case 2:
