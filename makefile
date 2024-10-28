@@ -11,7 +11,10 @@ all: main.o base.o user.o
 	gcc -o rede_social main.o base.o user.o
 
 clean:
-	rm *.o rede_social
+	rm base.o
+	rm user.o
+	rm main.o
+	rm ./rede_social.exe
 
 run:
 	./rede_social.exe
