@@ -170,6 +170,7 @@ void DelgropSys(Node *grupo, User *leader){
     int erro;
     User *temp=grupo->info->grp->members->start->info->user;
     while(temp!=NULL){
+        printf("user :%s\n", temp->username);
         Node *aux=FindGroupNodeByName(temp->groups, grupo->info->grp->groupname);
         TurnFirst(temp->groups, aux);
         Pop(temp->groups, &erro);
