@@ -18,3 +18,9 @@ clean:
 
 run:
 	./rede_social.exe
+
+debug:
+	make clean
+	make all
+	clear
+	./rede_social.exe

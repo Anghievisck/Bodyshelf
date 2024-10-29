@@ -19,7 +19,4 @@ void Push(List*, Dado*);
 void Pop(List*, int *);
 void Out(List*, int *);
 
-Dado* Top(List*, int *);
-Dado* Bottom(List*, int *);
-
-void TurnFirst(List *l, Node *node);
+void RemoveNode(List *l, Node *node);
