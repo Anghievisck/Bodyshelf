@@ -435,7 +435,7 @@ void SendGroupMsg(List *allusers){
     Node *aux = grupo->members->start;
 
     while(aux != NULL){
-        if(aux->info->user->username != username){
+        if(strcmp(aux->info->user->username, username) != 0){
             Msg *txt = (Msg*)malloc(sizeof(Msg));
 
             strcpy(txt->name, tempo);
@@ -464,9 +464,6 @@ void RegisterUser(List *allUsers){
         return;
     }
 
-    printf("\nCheckpoint %d\n", i);
-    i++;
-
     //leitura dos dados do usuario
     printf("Digite seu nome: ");
     getchar(); 
@@ -474,21 +471,12 @@ void RegisterUser(List *allUsers){
     user->name[strcspn(user->name, "\n")] = 0;
     printf("\n");
 
-    printf("\nCheckpoint %d\n", i);
-    i++;
-
     printf("Digite seu username: ");
-
-    printf("\nCheckpoint %d", i);
-    i++;
 
     while(loop == 1){
         fgets(user->username, sizeof(user->username), stdin);
         user->username[strcspn(user->username, "\n")] = 0;
         printf("\n");
-
-        printf("\nCheckpoint %d\n", i);
-        i++;
 
         if(strchr(user->username, ' ')) {
             printf("Por favor retire o espaco do username.\nPor favor informe outro: ");
@@ -499,33 +487,16 @@ void RegisterUser(List *allUsers){
                 printf("Seu username ja existe...\nPor favor informe outro: ");
             }
         }
-
-        printf("\nCheckpoint %d\n", i);
-        i++;
     }
 
     // Incializa as listas do usuario
     user->colleges = Create(user->colleges);
-    printf("\nCheckpoint %d\n", i);
-    i++;
     user->request = Create(user->request);
-    printf("\nCheckpoint %d\n", i);
-    i++;
     user->msg = Create(user->msg);
-    printf("\nCheckpoint %d\n", i);
-    i++;
     user->blacklist = Create(user->blacklist);
-    printf("\nCheckpoint %d\n", i);
-    i++;
     user->groups = Create(user->groups);
-    printf("\nCheckpoint %d\n", i);
-    i++;
     user->groupleader = Create(user->groupleader);
-    printf("\nCheckpoint %d\n", i);
-    i++;
     user->groupsrequest = Create(user->groupsrequest);
-    printf("\nCheckpoint %d\n", i);
-    i++;
 
     /*
         Aqui, note que criamos um ponteiro do tipo dado chamado de "casulo", pois a nossa lista
@@ -534,15 +505,8 @@ void RegisterUser(List *allUsers){
         áreas do código
     */
     Dado *casulo = (Dado*)malloc(sizeof(Dado));
-    printf("\nCheckpoint %d\n", i);
-    i++;
     casulo->user = user;
-    printf("\nCheckpoint %d\n", i);
-    i++;
-
     Push(allUsers, casulo);
-    printf("\nCheckpoint %d\n", i);
-    i++;
 }
 
 /*
@@ -582,6 +546,8 @@ void Block(List *allusers){
 
         TurnFirst(temp->info->user->colleges, aux);
         Pop(temp->info->user->colleges, &erro);
+        
+        temp = FindNodeByUsernamne(user->colleges, target);
         TurnFirst(user->colleges, temp);
         Pop(user->colleges, &erro);
 
@@ -660,7 +626,7 @@ void Suggestions(List *alluser){
     for(int i=0; i<user->colleges->total; i++){
         Node *aux = temp->info->user->colleges->start;
         while(aux != NULL){
-            if(aux->info->user->username != username){
+            if(strcmp(aux->info->user->username, username) != 0){
                 printf("%s\n", aux->info->user->username);
             }
             aux = aux->next;

@@ -26,6 +26,7 @@ void Push(List *l, Dado *u){
         l->end = temp;
     }
 }
+
 //Se usar tome cuidade para ter certeza que Node esta na sua lista :p
 void TurnFirst(List *l, Node *node){
     if(node!=l->start){
@@ -40,11 +41,11 @@ void TurnFirst(List *l, Node *node){
         l->start->previous=node;
     }
 }
+
 void Pop(List *l, int *e){
     if(l->total != 0){
         *e = 0;
         l->total--;
-        Dado *u = l->start->info;
         Node *temp = l->start;
         Dado *aux = l->start->info;
         l->start = l->start->next;
@@ -59,6 +60,7 @@ void Pop(List *l, int *e){
         return;
     }
 }
+
 void Out(List *l, int *e){
     if(l->total != 0){
         *e = 0;

@@ -26,17 +26,11 @@ typedef enum {
 int main(){
     int loop = 1, i;
 
-    List *rede = (List *)malloc(sizeof(List)); // Aloca memória para rede
-
-    if (rede == NULL) {
-        fprintf(stderr, "Erro ao alocar memória para a lista.\n");
-        return 1; // Retorna um erro se a alocacão falhar
-    }
-
-    Create(rede);
+    List *rede;
+    rede = Create(rede);
 
     while(loop == 1){
-        printf("1) cadastrar um usuario \n");
+        printf("\n1) cadastrar um usuario \n");
         printf("2) listar usuarios cadastrados e suas informacoes \n");
         printf("3) pedir para ser parceiro de um usuario \n");
         printf("4) avaliar lista de pedidos de parceria \n");
