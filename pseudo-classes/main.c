@@ -23,8 +23,8 @@ int main(){
         printf("13) adicionar colega ao grupo \n");
         printf("14) avaliar lista de pedidos de grupos \n");
         printf("15) enviar mensagem para grupo \n");
-        printf("17) Deletar um grupo \n");
-        printf("18) fecha programa \n");
+        printf("16) Deletar um grupo \n");
+        printf("17) fecha programa \n");
         printf("O que deseja fazer? ");
         scanf(" %d", &i);
         printf("\n");
@@ -34,25 +34,25 @@ int main(){
                 RegisterUser(rede);
             break;
             case 2:
-                PrintNet(rede);
+                PrintNetwork(rede);
             break;
             case 3:
-                Collegesrequest(rede);
+                CollegesRequest(rede);
             break;
             case 4:
-                Showrequests(rede);
+                ShowCollegeRequest(rede);
             break;
             case 5:
-                sendmsg(rede);
+                SendMsgToCollege(rede);
             break;
             case 6:
-                showmsg(rede);
+                ShowMsg(rede);
             break;
             case 7:
                 Suggestions(rede);
             break;
             case 8:
-                dellrede(rede);
+                DelNetwork(rede);
             break;
             case 9:
                 RemoveCollege(rede);
@@ -64,21 +64,21 @@ int main(){
                 RemoveBlock(rede);
             break;
             case 12:
-                Makegroup(rede);
+                RegisterGroup(rede);
             break;
             case 13:
                 AddCollegeforGroup(rede);
             break;
             case 14:
-                Groupsrequests(rede);
+                GroupsRequests(rede);
             break;
             case 15:
-                SendmsgGroup(rede);
+                SendGroupMsg(rede);
             break;
             case 16:
-                DelgroupUser(rede);
+                DelGroup(rede);
             break;
-            case 18:
+            case 17:
                 loop=0;
             break;
             default:

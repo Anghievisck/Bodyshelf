@@ -1,11 +1,11 @@
 
-#include "base.h"
 #include "user.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 typedef struct user User;
-void dellrede(List *allusers){
+void DelNetwork(List *allusers){
     //para cada usuario
     int total=allusers->total;
     Node *aux=allusers->start;
@@ -13,7 +13,7 @@ void dellrede(List *allusers){
         User *temp=aux->info->user;
         int k=temp->groupleader->total;
         for(int j=0; j<k; j++){
-            DelgropSys(temp->groupleader->start, temp);
+            DelGroupSys(temp->groupleader->start, temp);
         }
         aux=aux->next;
     }
@@ -62,7 +62,7 @@ void dellrede(List *allusers){
     //em tese allusers deve ficar que nem quando criado
     allusers->total=0;
 }
-void PrintNet(List *alluser){
+void PrintNetwork(List *alluser){
     int i=1;
     if(alluser->total!=0){
         Node *temp = alluser->start;
@@ -76,7 +76,7 @@ void PrintNet(List *alluser){
             ShowBlocks(temp->info->user);
             printf("\n");
             printf("E faz parte destes grupos:\n2");
-            Showgroups(temp->info->user);
+            ShowGroups(temp->info->user);
             temp=temp->next;
             i++;
         }
@@ -84,7 +84,7 @@ void PrintNet(List *alluser){
         printf("Rede sem usuarios\n");
     }
 }
-void DelgroupUser(List *allusers){
+void DelGroup(List *allusers){
     printf("Entre com o seu apelido:");
     char username[12];
     scanf("%s", &username);
@@ -99,7 +99,7 @@ void DelgroupUser(List *allusers){
         return;
     }
     printf("Voce é lider destes grupos:\n");
-    ShowLeadergroups(user);
+    ShowLeaderGroups(user);
     char temp[12];
     printf("Escolha um Grupo: ");
     scanf("%s", &temp);
@@ -116,10 +116,10 @@ void DelgroupUser(List *allusers){
     printf("\n");
     int erro;
     if(choice=='S'){
-        DelgropSys(grupo, user);
+        DelGroupSys(grupo, user);
     }
 }
-void DelgropSys(Node *grupo, User *leader){
+void DelGroupSys(Node *grupo, User *leader){
     int erro;
     int k=grupo->info->grp->members->total;
     Group *grp=grupo->info->grp;
@@ -151,7 +151,7 @@ void DelgropSys(Node *grupo, User *leader){
     return;
 }
 
-void Makegroup(List *allusers){
+void RegisterGroup(List *allusers){
     printf("Entre com o seu apelido:");
     char username[12];
     scanf("%s", &username);
@@ -174,7 +174,7 @@ void Makegroup(List *allusers){
     Push(user->groups, casulo);
     Push(grp->members, casulo2);
 }
-void AddCollegeforGroup(List *allusers){
+void AddCollegeToGroup(List *allusers){
     printf("Entre com o seu apelido:");
     char username[12];
     scanf("%s", &username);
@@ -185,7 +185,7 @@ void AddCollegeforGroup(List *allusers){
         return;
     }
     printf("Voce é lider destes grupos:");
-    ShowLeadergroups(user);
+    ShowLeaderGroups(user);
     char temp[12];
     printf("Escolha um Grupo: ");
     scanf("%s", &temp);
@@ -211,7 +211,7 @@ void AddCollegeforGroup(List *allusers){
     Push(alvo->groupsrequest, casulo);
     Push(grupo->members, casulo2);
 }
-void Groupsrequests(List *allusers){
+void GroupsRequests(List *allusers){
     //essa funçao permite um usuario a ver a sua lista de convites para grupos
     printf("Entre com o seu apelido:");
     char username[12];
@@ -267,7 +267,7 @@ void Groupsrequests(List *allusers){
         return;
     }
 }
-void SendmsgGroup(List *allusers){
+void SendGroupMsg(List *allusers){
     printf("Entre com o seu apelido:");
     char username[12];
     scanf("%s", &username);
@@ -278,7 +278,7 @@ void SendmsgGroup(List *allusers){
         return;
     }
     printf("Voce é faz parte destes grupos:\n");
-    Showgroups(user);
+    ShowGroups(user);
     char temp[12];
     printf("Escolha um Grupo: ");
     scanf("%s", &temp);
@@ -296,13 +296,13 @@ void SendmsgGroup(List *allusers){
     printf("\n");
     Node *aux=grupo->members->start;
     while(aux!=NULL){
-        Msg *txt = (Msg*)malloc(sizeof(Msg));
-        strcpy(txt->name, tempo);
-        strcpy(txt->username, username);
-        strcpy(txt->chat, grupo->groupname);
-        Dado *casulo =(Dado*)malloc(sizeof(Dado));
-        casulo->msg=txt;
         if(aux->info->user->username!=username){
+            Msg *txt = (Msg*)malloc(sizeof(Msg));
+            strcpy(txt->name, tempo);
+            strcpy(txt->username, username);
+            strcpy(txt->chat, grupo->groupname);
+            Dado *casulo =(Dado*)malloc(sizeof(Dado));
+            casulo->msg=txt;
             Push(aux->info->user->msg, casulo);
         }
         aux=aux->next;
@@ -328,14 +328,14 @@ Group* FindGroupByName(List *l, char target[12]){
     }
     return (NULL);
 }
-void ShowLeadergroups(User *user){
+void ShowLeaderGroups(User *user){
     Node *temp = user->groupleader->start;
         while(temp!=NULL){
             printf("%s\n", temp->info->grp->groupname);
             temp=temp->next;
         }
 }
-void Showgroups(User *user){
+void ShowGroups(User *user){
     Node *temp = user->groups->start;
     while(temp!=NULL){
             printf("%s\n", temp->info->grp->groupname);
@@ -453,7 +453,7 @@ void Block(List *allusers){
     printf("Usuario bloqueado\n");
 }
 //essa diferente da funçao de cima le qual o usuario
-void Showmycolleges(List *allusers){
+void ShowMycolleges(List *allusers){
     printf("Entre com o seu apelido:");
     char username[12];
     scanf("%s", &username);
@@ -480,7 +480,7 @@ void Suggestions(List *alluser){
     }
 }
 //essa funçao vai permite um usuario a enviar para outro um convite de amizade
-void Collegesrequest(List *allusers){
+void CollegesRequest(List *allusers){
     //usuario que esta enviando
     printf("Entre com o seu apelido:");
     char username[12];
@@ -518,7 +518,7 @@ void Collegesrequest(List *allusers){
         return;
     }
     //logo abaixo explico essa funçao
-    addrequest(alvo, user);
+    AddRequest(alvo, user);
     printf("Pedido encaminhado com sucesso\n");
 }
 void RemoveCollege(List *allusers){
@@ -581,7 +581,7 @@ void RemoveBlock(List *allusers){
 void ShowBlocks(User *user){
     ShowUsers(user->blacklist);
 }
-void addrequest(User *aceitas, User *aguardo){
+void AddRequest(User *aceitas, User *aguardo){
     if(aceitas != NULL && aguardo != NULL){
         //novamente aq temos um *usuario e queremos *dado para colocar na lista de request do alvo entao eu faço o casulo
         Dado *casulo =(Dado*)malloc(sizeof(Dado));
@@ -589,7 +589,7 @@ void addrequest(User *aceitas, User *aguardo){
         Push(aceitas->request, casulo);
     }
 }
-void Showrequests(List  *allusers){
+void ShowCollegeRequest(List  *allusers){
     //essa funçao permite um usuario a ver a sua lista de convites
     printf("Entre com o seu apelido:");
     char username[12];
@@ -645,7 +645,7 @@ void Showrequests(List  *allusers){
         return;
     }
 }
-void sendmsg(List *allusers){
+void SendMsgToCollege(List *allusers){
     //mesmo codigo que le o usuario e acha um alvo mas dessa vez queremos enviar uma msg nao um convite
     printf("Entre com o seu apelido:");
     char username[12];
@@ -679,7 +679,7 @@ void sendmsg(List *allusers){
     casulo->msg=txt;
     Push(alvo->msg, casulo);
 }
-void showmsg(List *allusers){
+void ShowMsg(List *allusers){
     //le um usuario para poder mostrar suas mensagens
     printf("Entre com o seu apelido:");
     char username[12];

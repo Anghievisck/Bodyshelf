@@ -5,7 +5,8 @@
 
 #define NAME 50
 #define USERNAME 12
-
+typedef struct node Node;
+typedef struct list List;
 typedef struct user{
     char name[NAME], username[USERNAME];
     List *colleges, *request, *msg, *blacklist, *groups, *groupleader, *groupsrequest;

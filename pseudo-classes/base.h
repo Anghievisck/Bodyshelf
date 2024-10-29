@@ -1,3 +1,4 @@
+typedef struct 
 typedef union{
     struct user *user;
     struct msg *msg;

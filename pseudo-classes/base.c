@@ -59,7 +59,7 @@ void Pop(List *l, int *e){
         return;
     }
 }
-Dado* Out(List *l, int *e){
+void Out(List *l, int *e){
     if(l->total != 0){
         *e = 0;
         l->total--;
@@ -71,10 +71,10 @@ Dado* Out(List *l, int *e){
         }
         free(temp);
         free(u);
-        return(u);
+        return;
     } else {
         *e=1;
-        return(NULL);
+        return;
     } 
 }
 
