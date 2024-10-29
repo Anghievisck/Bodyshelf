@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "user.h"
-#include "base.h"
 
 int main(){
     int loop=1, i;
@@ -67,7 +66,7 @@ int main(){
                 RegisterGroup(rede);
             break;
             case 13:
-                AddCollegeforGroup(rede);
+                AddCollegeToGroup(rede);
             break;
             case 14:
                 GroupsRequests(rede);

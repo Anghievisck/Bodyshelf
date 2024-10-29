@@ -75,7 +75,7 @@ void PrintNetwork(List *alluser){
             printf("Bloqueados:\n");
             ShowBlocks(temp->info->user);
             printf("\n");
-            printf("E faz parte destes grupos:\n2");
+            printf("E faz parte destes grupos:\n");
             ShowGroups(temp->info->user);
             temp=temp->next;
             i++;
@@ -95,10 +95,10 @@ void DelGroup(List *allusers){
         return;
     }
     if(user->groupleader->total==0){
-        printf("Voce nao é lider de nenhum grupo :p.\n");
+        printf("Voce nao e lider de nenhum grupo :p.\n");
         return;
     }
-    printf("Voce é lider destes grupos:\n");
+    printf("Voce e lider destes grupos:\n");
     ShowLeaderGroups(user);
     char temp[12];
     printf("Escolha um Grupo: ");
@@ -184,7 +184,7 @@ void AddCollegeToGroup(List *allusers){
         printf("Usuario nao encontrado");
         return;
     }
-    printf("Voce é lider destes grupos:");
+    printf("Voce e lider destes grupos:");
     ShowLeaderGroups(user);
     char temp[12];
     printf("Escolha um Grupo: ");
@@ -277,7 +277,7 @@ void SendGroupMsg(List *allusers){
         printf("Usuario nao encontrado");
         return;
     }
-    printf("Voce é faz parte destes grupos:\n");
+    printf("Voce faz parte destes grupos:\n");
     ShowGroups(user);
     char temp[12];
     printf("Escolha um Grupo: ");
@@ -420,8 +420,9 @@ void Block(List *allusers){
         TurnFirst(user->colleges, temp);
         Pop(user->colleges, &erro);
         printf("Amizade removida automaticamente\n");
+        User *alvo = FindUserByUsernamne(allusers, target);
         Dado *casulo =(Dado*)malloc(sizeof(Dado));
-        casulo->user=temp->info->user;
+        casulo->user=alvo;
         Push(user->blacklist, casulo);
         printf("Usuario bloqueado\n");
         return;
@@ -702,7 +703,7 @@ void ShowMsg(List *allusers){
         //todo usuario tem a lista msg essa lista encadeada tem um começo que é um bloco que tem como info um * da union essa union pode guarda tanto um usuario/
         //quanto uma msg mas aq queremos uma msg entao com user->msg-start->info->msg chegamos na primeira mensagem da lista, o seu username é a sua assinatura
         //ja name msg em si
-        printf("enviado por(%s) no chat%s, %s\n", user->msg->start->info->msg->username, user->msg->start->info->msg->chat ,user->msg->start->info->msg->name);
+        printf("enviado por(%s) na %s: %s\n", user->msg->start->info->msg->username, user->msg->start->info->msg->chat ,user->msg->start->info->msg->name);
         int erro;
         //retiro a primeira msg.
         free(user->msg->start->info->msg);
