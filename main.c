@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "pseudo-classes/user.h"
-#include "pseudo-classes/base.h"
 
-typedef enum OPTIONS{
+#include "pseudo-classes/user.h"
+
+typedef enum {
     REGISTER_USER,
     PRINT_NET,
     REQUEST_COLLEGE,
@@ -15,17 +15,16 @@ typedef enum OPTIONS{
     REMOVE_COLLEGE,
     BLOCK_USER,
     REMOVE_BLOCK,
-    CREATE_GROUP,
+    REGISTER_GROUP,
     ADD_TO_GROUP,
     VIEW_GROUP_REQUESTS,
     SEND_GROUP_MSG,
-    CHANGE_GROUP_LEADERSHIP,
     DELETE_GROUP,
     CLOSE_PROGRAMM
-};
+} OPTIONS;
 
 int main(){
-    int loop=1, i;
+    int loop = 1, i;
 
     List *rede = (List *)malloc(sizeof(List)); // Aloca memória para rede
 
@@ -36,7 +35,7 @@ int main(){
 
     Create(rede);
 
-    while(loop==1){
+    while(loop == 1){
         printf("1) cadastrar um usuario \n");
         printf("2) listar usuarios cadastrados e suas informacoes \n");
         printf("3) pedir para ser parceiro de um usuario \n");
@@ -52,12 +51,11 @@ int main(){
         printf("13) adicionar colega ao grupo \n");
         printf("14) avaliar lista de pedidos de grupos \n");
         printf("15) enviar mensagem para grupo \n");
-        printf("16) passar lideranca \n");
-        printf("17) Deletar um grupo \n");
-        printf("18) fecha programa \n");
+        printf("16) Deletar um grupo \n");
+        printf("17) fecha programa \n");
         printf("O que deseja fazer? ");
 
-        scanf(" %d ", &i);
+        scanf(" %d", &i);
         i--;
 
         printf("\n");
@@ -67,25 +65,25 @@ int main(){
                 RegisterUser(rede);
             break;
             case PRINT_NET:
-                PrintNet(rede);
+                PrintNetwork(rede);
             break;
             case REQUEST_COLLEGE:
-                Collegesrequest(rede);
+                CollegesRequest(rede);
             break;
             case VIEW_COLLEGE_REQUESTS:
-                Showrequests(rede);
+                ShowCollegeRequest(rede);
             break;
             case SEND_COLLEGES_MSG:
-                sendmsg(rede);
+                SendMsgToCollege(rede);
             break;
             case VIEW_MSG:
-                showmsg(rede);
+                ShowMsg(rede);
             break;
             case POSSIBLE_COLLEGES:
                 Suggestions(rede);
             break;
             case RESTART_SYSTEM:
-                dellrede(rede);
+                DelNetwork(rede);
             break;
             case REMOVE_COLLEGE:
                 RemoveCollege(rede);
@@ -96,29 +94,26 @@ int main(){
             case REMOVE_BLOCK:
                 RemoveBlock(rede);
             break;
-            case CREATE_GROUP:
-                Makegroup(rede);
+            case REGISTER_GROUP:
+                RegisterGroup(rede);
             break;
             case ADD_TO_GROUP:
-                AddCollegeforGroup(rede);
+                AddCollegeToGroup(rede);
             break;
             case VIEW_GROUP_REQUESTS:
-                Groupsrequests(rede);
+                GroupsRequests(rede);
             break;
             case SEND_GROUP_MSG:
-                SendmsgGroup(rede);
-            break;
-            case CHANGE_GROUP_LEADERSHIP:
-                PassTheCrown(rede);
+                SendGroupMsg(rede);
             break;
             case DELETE_GROUP:
-                DelgroupUser(rede);
+                DelGroup(rede);
             break;
             case CLOSE_PROGRAMM:
                 loop=0;
             break;
             default:
-                printf("Nao seja um macaco");
+                printf("\nOpcao invalida\n");
             break;
         }
     }

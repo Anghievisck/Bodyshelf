@@ -5,8 +5,7 @@
 
 #define NAME 50
 #define USERNAME 12
-typedef struct node Node;
-typedef struct list List;
+
 typedef struct user{
     char name[NAME], username[USERNAME];
     List *colleges, *request, *msg, *blacklist, *groups, *groupleader, *groupsrequest;
@@ -41,22 +40,10 @@ void ShowUsers(List *a);
 void ShowMycolleges(List *a);
 void ShowCollegeRequest(List *a);
 void ShowMsg(List *a);
-void ShowColleges(User *a);
-void AddRequest(User *a, User *u);
 
 void RemoveCollege(List *a);
 void RemoveBlock(List *a);
 void Block(List *a);
-void ShowBlocks(User *a);
-
-Node* FindGroupNodeByName(List *l, char target[12]);
-Group* FindGroupByName(List *l, char target[12]);
-void ShowLeaderGroups(User *user);
-void ShowGroups(User *user);
-void DelGroupSys(Node *grupo, User *leader);
-Node* FindNodeByUsernamne(List *a, char[USERNAME]);
-User* FindUserByUsernamne(List *a, char[USERNAME]);
-
 void DelGroup(List *a);
 void DelNetwork(List *a);
 
