@@ -43,6 +43,7 @@ void AddRequest(User *aceitas, User *aguardo){
     if(aceitas != NULL && aguardo != NULL){
         Dado *casulo = (Dado*)malloc(sizeof(Dado));
         casulo->user = aguardo;
+
         Push(aceitas->request, casulo);
     }
 }
@@ -284,7 +285,7 @@ void DelGroup(List *allusers){
     }
 
     if(user->groupleader->total == 0){
-        printf("Voce nao e lider de nenhum grupo :p.\n");
+        printf("Voce nao e lider de nenhum grupo.\n");
 
         return;
     }
@@ -362,6 +363,7 @@ void AddCollegeToGroup(List *allusers){
 
     if(user == NULL){
         printf("Erro: Usuario nao encontrado");
+
         return;
     }
 
@@ -375,6 +377,7 @@ void AddCollegeToGroup(List *allusers){
 
     if(grupo == NULL){
         printf("Nenhum grupo selecionado.\n");
+        
         return;
     }
 
@@ -384,23 +387,22 @@ void AddCollegeToGroup(List *allusers){
 
     if(FindUserByUsernamne(grupo->members, target) != NULL){
         printf("Ele ja esta no grupo...\n");
+
         return;
     }
 
     alvo = FindUserByUsernamne(user->colleges, target);
     if(alvo == NULL){
-        printf("Esse usuário não é seu colega...\n");
+        printf("Esse usuario nao e seu colega...\n");
+
         return;
     }
 
     casulo = (Dado*)malloc(sizeof(Dado));
-    casulo2 = (Dado*)malloc(sizeof(Dado));
 
     casulo->grp = grupo;
-    casulo2->user = alvo;
 
     Push(alvo->groupsrequest, casulo);
-    Push(grupo->members, casulo2);
 }
 
 // Mostra para algum usuário todas as solicitações de grupo enviadas para ele
@@ -435,6 +437,7 @@ void GroupsRequests(List *allusers){
         while(temp != NULL){
             int loop = 1, erro;
             char choice;
+
             //para evitar comando invalidos
             while(loop == 1){
                 printf("O grupo %s quer voce com eles. Aceita (S/N)? ", temp->groupname);
@@ -514,8 +517,8 @@ void SendGroupMsg(List *allusers){
     printf("\n");
 
     aux = grupo->members->start;
-    while(aux != NULL){
-        if(strcmp(aux->info->user->username, username) != 0){
+    for(int i = 0; i < grupo->members->total; i++){
+        if(aux != NULL && strcmp(aux->info->user->username, username) != 0){
             Msg *txt = (Msg*)malloc(sizeof(Msg));
 
             strcpy(txt->name, tempo);
@@ -586,7 +589,9 @@ void RegisterUser(List *allUsers){
         áreas do código
     */
     Dado *casulo = (Dado*)malloc(sizeof(Dado));
+
     casulo->user = user;
+
     Push(allUsers, casulo);
 }
 
@@ -656,6 +661,7 @@ void Block(List *allusers){
     alvo = FindUserByUsernamne(allusers, target);
     if(alvo == NULL){
         printf("Erro: Usuario nao encontrado.\n");
+
         return;
     }
 
@@ -668,21 +674,27 @@ void Block(List *allusers){
     }
 
     Dado *casulo = (Dado*)malloc(sizeof(Dado));
+    
     casulo->user = alvo;
+
     Push(user->blacklist, casulo);
     printf("Usuario bloqueado\n");
 }
 
 // Mostra todos os colegas de um usuário
-void ShowMycolleges(List *allusers){
-    printf("Entre com o seu username: ");
+void ShowMyColleges(List *allusers){
     char username[12];
+
+    User *user;
+
+    printf("Entre com o seu username: ");
     scanf("%s", &username);
     printf("\n");
 
-    User *user = FindUserByUsernamne(allusers, username);
+    user = FindUserByUsernamne(allusers, username);
     if(user == NULL){
         printf("Erro: Usuario nao encontrado");
+
         return;
     }
 
@@ -697,20 +709,27 @@ void ShowMycolleges(List *allusers){
 void Suggestions(List *alluser){
     char username[12];
 
+    User *user;
+    Node *temp, *aux;
+
     printf("Entre com o seu username: ");
     scanf("%s", &username);
     printf("\n");
-    User *user = FindUserByUsernamne(alluser, username);
 
-    Node *temp = user->colleges->start;
-    for(int i=0; i<user->colleges->total; i++){
-        Node *aux = temp->info->user->colleges->start;
+    user = FindUserByUsernamne(alluser, username);
+
+    temp = user->colleges->start;
+    for(int i = 0; i < user->colleges->total; i++){
+        aux = temp->info->user->colleges->start;
+
         while(aux != NULL){
             if(strcmp(aux->info->user->username, username) != 0){
                 printf("%s\n", aux->info->user->username);
             }
+
             aux = aux->next;
         }
+
         temp = temp->next;
     }
 }
@@ -721,7 +740,7 @@ void CollegesRequest(List *allusers){
 
     User *user, *alvo;
 
-    //usuario que esta enviando
+    // Usuario que esta enviando
     printf("Entre com o seu username: ");
     scanf("%s", &username);
     printf("\n");
@@ -733,7 +752,7 @@ void CollegesRequest(List *allusers){
         return;
     }
 
-    //usuario alvo do convite
+    // Usuario alvo do convite
     printf("Digite o username de quem quer ser parcerio: ");
     scanf("%s", &target);
     printf("\n");
@@ -745,7 +764,7 @@ void CollegesRequest(List *allusers){
     }
 
     if(FindUserByUsernamne(user->request, target) != NULL){
-        printf("Este usuário já te enviou um pedido.\n");
+        printf("Este usuario ja te enviou um pedido.\n");
 
         return;
     }
@@ -770,7 +789,8 @@ void CollegesRequest(List *allusers){
     }
 
     if(FindUserByUsernamne(user->blacklist, target) != NULL){
-        printf("Tu primeiro da Block no mano e quer senta na janelinha, desbloqueia antes primeiro.\n");
+        printf("O usuario alvo esta no momento na sua lista de pessoas bloqueados");
+        printf(", Por favor desbloqueie primeiro.\n");
 
         return;
     }
@@ -872,19 +892,12 @@ void ShowCollegeRequest(List *allusers){
     scanf("%s", &username);
     printf("\n");
 
-
-    printf("\nCheckpoint: %d\n", i);
-    i++;
-
     user = FindUserByUsernamne(allusers, username);
     if(user == NULL){
         printf("Erro: Usuario nao encontrado");
 
         return;
     }
-    
-    printf("\nCheckpoint: %d\n", i);
-    i++;
 
     //estou trabalhando essa lista como uma fila ou seja eu to pegando pelo final da lista apenas
     //se a lista de convites estiver vazia
@@ -893,13 +906,9 @@ void ShowCollegeRequest(List *allusers){
 
         return;
     } else {
-        // 3
-        printf("\nCheckpoint: %d\n", i);
-        i++;
         //percorrendo todos os termos da lista user->request pelo fim 
         User *temp = user->request->end->info->user;
-        printf("\nCheckpoint: %d\n", i);
-        i++;
+
         while(temp != NULL){
             int loop = 1;
             char choice;
@@ -922,28 +931,16 @@ void ShowCollegeRequest(List *allusers){
                 Dado *casulo = (Dado*)malloc(sizeof(Dado));
                 Dado *casulo2 = (Dado*)malloc(sizeof(Dado));
 
-                printf("\nCheckpoint: %d\n", i);
-                i++;
-
                 casulo->user = temp;
                 casulo2->user = user;
 
-                printf("\nCheckpoint: %d\n", i);
-                i++;
-
                 Push(user->colleges, casulo);
                 Push(temp->colleges, casulo2);
-
-                printf("\nCheckpoint: %d\n", i);
-                i++;
             }
 
             //retirando o convite 
             int erro;
             Out(user->request, &erro);
-
-            printf("\nCheckpoint: %d\n", i);
-            i++;
 
             //se a lista estiver nao estiver vazia eu pego o novo ultimo convite
             if(user->request->end!=NULL){
@@ -957,77 +954,105 @@ void ShowCollegeRequest(List *allusers){
         return;
     }
 }
+
+// Função para enviar uma mensagem para um parceiro de um usuário
 void SendMsgToCollege(List *allusers){
-    //mesmo codigo que le o usuario e acha um alvo mas dessa vez queremos enviar uma msg nao um convite
+    char username[12], target[12];
+
+    User *user, *alvo;
+    Msg *txt;
+    Dado *casulo;
+
     printf("Entre com o seu username: ");
-    char username[12];
     scanf("%s", &username);
     printf("\n");
-    User *user = FindUserByUsernamne(allusers, username);
+    
+    user = FindUserByUsernamne(allusers, username);
     if(user == NULL){
         printf("Erro: Usuario nao encontrado");
+
         return;
     }
-    char target[12];
+
     printf("Digite o username de seu amigo: ");
     scanf("%s", &target);
     printf("\n");
-    User *alvo = FindUserByUsernamne(user->colleges, target);
+
+    alvo = FindUserByUsernamne(user->colleges, target);
     if(alvo == NULL){
         printf("Erro: Usuario nao encontrado");
+
         return;
     }
-    //lendo a msg
-    Msg *txt = (Msg*)malloc(sizeof(Msg));
-    printf("Entre com a mensagem : ");
+
+    txt = (Msg*)malloc(sizeof(Msg));
+
+    printf("Entre com a mensagem: ");
     getchar(); 
     fgets(txt->name, sizeof(txt->name), stdin);
     printf("\n");
-    //"assinando" a msg
+
+    // Vinculando a mensagem ao autor da mesma
     strcpy(txt->username, username);
     strcpy(txt->chat, "DM");
-    //igual com usuario é necessario o casulo para colocar a msg numa lista
-    Dado *casulo =(Dado*)malloc(sizeof(Dado));
-    casulo->msg=txt;
+
+    casulo = (Dado*)malloc(sizeof(Dado));
+
+    casulo->msg = txt;
+
     Push(alvo->msg, casulo);
 }
+
+// Mostra todas as mensagens que um usuário recebeu
 void ShowMsg(List *allusers){
-    //le um usuario para poder mostrar suas mensagens
-    printf("Entre com o seu username: ");
     char username[12];
+
+    User *user;
+
+    printf("Entre com o seu username: ");
     scanf("%s", &username);
     printf("\n");
-    User *user = FindUserByUsernamne(allusers, username);
+
+    user = FindUserByUsernamne(allusers, username);
     if(user == NULL){
         printf("Erro: Usuario nao encontrado");
+
         return;
     }
-    //Se a lista msg estiver vazia tem ate msm uma super recomendação
+
+    // Se a lista msg estiver vazia, oferecemos a função de recomendação de novas parcerias
     if(user->msg->start == NULL){
-        printf("Sem mensagens, procure + amigos usando a funcao suggestions\n");
+        printf("Sem mensagens, voce pode fazer mais parcerias usando a funcao 'Suggestions'\n");
+
         return;
     }
-    //aq percorro a lista msg 
+
     printf("Suas mensagens sao:\n");
-    while(user->msg->start!=NULL){
-        //bele a logica das é a seguinte para acessar a nossa mensgens em expecifico temos o seguinte caminho
-        //todo usuario tem a lista msg essa lista encadeada tem um começo que é um bloco que tem como info um * da union essa union pode guarda tanto um usuario/
-        //quanto uma msg mas aq queremos uma msg entao com user->msg-start->info->msg chegamos na primeira mensagem da lista, o seu username é a sua assinatura
-        //ja name msg em si
-        printf("enviado por(%s) na %s: %s\n", user->msg->start->info->msg->username, user->msg->start->info->msg->chat ,user->msg->start->info->msg->name);
+    while(user->msg->start != NULL){
+        /*
+            Aqui é necessário uma explicação mais a fundo por conta de como nosso nó foi montado.
+
+            Caso você tenha visto, nosso nó possue o campo info, que é um pointeiro para uma union, sendo esta
+            uma union de três ponteiros de struct, "user", "msg" e "grupo". Também note que a struct "msg"
+            tem como campos 'username' e 'name', sendo respectivamente, o autor da mensagem e a mensagem
+        */
+        printf("Enviado por: (%s) na %s: %s\n", user->msg->start->info->msg->username, user->msg->start->info->msg->chat, user->msg->start->info->msg->name);
         int erro;
         //retiro a primeira msg.
         free(user->msg->start->info->msg);
+
         Pop(user->msg, &erro);
     }
-    //Aq é evidente o uso de uma pilha ja que as primeiras mensagens que aparecem sao as ultimas que foram enviadas
+    // Aqui é evidente o uso de uma pilha ja que as primeiras mensagens que aparecem sao as ultimas que foram enviadas
     printf("Mensagens exibidas\n");
 }
+
+// Percorre uma lista printando o username dos usuarios nela 
 void ShowUsers(List *l){
-    //percorre uma lista printando o username dos usuarios nela 
     Node *temp = l->start;
     while(temp != NULL){
         printf("%s\n", temp->info->user->username);
+
         temp = temp->next;
     }
-};
+}

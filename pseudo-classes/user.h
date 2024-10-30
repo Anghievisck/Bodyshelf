@@ -37,7 +37,7 @@ void PrintNetwork(List *a);
 void Suggestions(List *a);
 
 void ShowUsers(List *a);
-void ShowMycolleges(List *a);
+void ShowMyColleges(List *a);
 void ShowCollegeRequest(List *a);
 void ShowMsg(List *a);
 

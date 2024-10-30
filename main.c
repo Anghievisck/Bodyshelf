@@ -30,25 +30,32 @@ int main(){
     rede = Create(rede);
 
     while(loop == 1){
-        printf("\n1) cadastrar um usuario \n");
-        printf("2) listar usuarios cadastrados e suas informacoes \n");
-        printf("3) pedir para ser parceiro de um usuario \n");
-        printf("4) avaliar lista de pedidos de parceria \n");
-        printf("5) enviar mensagem para um parceiro \n");
-        printf("6) ver mensagens recebidas \n");
-        printf("7) sugerir novas parcerias \n");
-        printf("8) reinicializar sistema \n");
-        printf("9) remover colega \n");
-        printf("10) bloquear usuario \n");
-        printf("11) remover bloqueio \n");
-        printf("12) criar grupo \n");
-        printf("13) adicionar colega ao grupo \n");
-        printf("14) avaliar lista de pedidos de grupos \n");
-        printf("15) enviar mensagem para grupo \n");
-        printf("16) Deletar um grupo \n");
-        printf("17) fecha programa \n");
-        printf("O que deseja fazer? ");
+        printf("\n ==========================\n");
+        printf("       Menu Principal     ");
+        printf("\n ==========================\n");
+        printf(" 1.  Cadastrar um usuario\n");
+        printf(" 2.  Listar informacoes da rede\n");
+        printf(" 3.  Pedir para ser parceiro de um usuario\n");
+        printf(" 4.  Avaliar lista de pedidos de parceria\n");
+        printf(" 5.  Enviar mensagem para um parceiro\n");
+        printf(" 6.  Ver mensagens recebidas\n");
+        printf(" 7.  Sugerir novas parcerias\n");
+        printf(" 8.  Reinicializar sistema\n");
 
+        printf("\n ==========================\n");
+        printf("           Extras          ");
+        printf("\n ==========================\n");
+        printf(" 9.  Remover colega\n\n");
+        printf(" 10. Bloquear usuario\n");
+        printf(" 11. Remover bloqueio\n\n");
+        printf(" 12. Criar grupo\n");
+        printf(" 13. Adicionar colega ao grupo\n");
+        printf(" 14. Avaliar lista de pedidos de grupos\n");
+        printf(" 15. Enviar mensagem para grupo\n");
+        printf(" 16. Deletar um grupo\n\n");
+        printf(" 17. Fechar programa\n\n");
+
+        printf(" O que deseja fazer? ");
         scanf(" %d", &i);
         i--;
 
@@ -104,7 +111,7 @@ int main(){
                 DelGroup(rede);
             break;
             case CLOSE_PROGRAMM:
-                loop=0;
+                loop = 0;
             break;
             default:
                 printf("\nOpcao invalida\n");
